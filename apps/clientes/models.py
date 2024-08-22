@@ -8,7 +8,7 @@ class Cliente (models.Model):
     correo = models.CharField(max_length=128, verbose_name="Correo")
     telefono = models.CharField(max_length=15, verbose_name="Telefono")
     direccion = models.CharField(max_length=255, verbose_name="Direccion")
-    fecha_registro = models.DateField(verbose_name='Fecha de Nacimiento')
+    contraseña = models.CharField(max_length=254, verbose_name="Contraseña")
     
     class Meta:
         verbose_name = "Cliente"
