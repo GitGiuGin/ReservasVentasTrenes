@@ -22,5 +22,17 @@ class Cliente (models.Model):
     def __str__(self):
         return self.nombre_completo()
     
-    def registrar_cliente():
+    def registroCliente():
         pass
+    
+    def editarClienteAdministrador():
+        pass
+    
+    def editarCliente(id):
+        id = Cliente.objects.get_id(id = id)
+        
+    def editarDatosPersonalesCliente():
+        id = Cliente.objects.get_id(id = id)
+        
+    def cambiarContrasena(id):
+        id = Cliente.objects.get_id(id = id)

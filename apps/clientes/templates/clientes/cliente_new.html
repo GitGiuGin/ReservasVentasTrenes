@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block  content %}
+
+<form action="POST">
+    <label for="txtNombre">Nombre: </label>
+    <input type="text" placeholder="Nombre" required> <br>
+    <label for="txtApellidoPaterno">Apellido Paterno: </label>
+    <input type="text" placeholder="Ap. Paterno" required> <br>
+    <label for="txtApellidoMaterno">Apellido Materno: </label>
+    <input type="text" placeholder="Ap. Materno" required> <br>
+    <label for="txtCorreo">Correo: </label>
+    <input type="text" placeholder="Correo" required> <br>
+    <label for="txtTelefono">Telefono: </label>
+    <input type="text" placeholder="Telefono" required> <br>
+    <label for="txtDireccion">Direccion: </label>
+    <input type="text" placeholder="Direccion" required> <br>
+    <label for="txtContraseña">Contraseña: </label>
+    <input type="text" placeholder="Contraseña" required> <br>
+    <label for="txtConfContraseña">Confirmar contraseña: </label>
+    <input type="text" placeholder="Confirmar contraseña" required> <br>
+    <input type="submit" value="Guardar">
+
+</form>
+
+{% endblock  %}
