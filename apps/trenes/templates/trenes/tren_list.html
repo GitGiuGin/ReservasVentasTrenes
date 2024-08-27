@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block  content %}
+    <table>
+        <thead>
+            <th>Tren</th>
+            <th>Capacidad</th>
+            <th>Estado</th>
+        </thead>
+        <tbody>
+            {% for t in object_list %}
+            <tr>
+                <td> {{t.nombre}} </td>
+                <td> {{t.capacidad}} </td>
+                <td> {{t.estado}} </td>
+                <td> <a href="editarTren/{{t.id}}" class="btn btn-sm btn-block btn-info">Editar</a></td>
+                <td> <a href="eliminarTren/{{t.id}}" class="btn btn-sm btn-block btn-danger"> Desactivar</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock  %}

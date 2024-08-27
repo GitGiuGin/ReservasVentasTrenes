@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block  content %}
+
+<form action="{% url 'tren_registrar' %}" method="POST"> {% csrf_token %}
+    <label for="txtNombre">Nombre: </label>
+    <input type="text" name="txtNombre" placeholder="Nombre" required> <br>
+    <label for="txtCapacidad">Capacidad: </label>
+    <input type="number" name="txtCapacidad" default="2" required> <br>
+    <!-- <label for="txtConfContraseña">Confirmar contraseña: </label>
+    <input type="text" placeholder="Confirmar contraseña" required> <br> -->
+    <input type="submit" value="Guardar">
+
+</form>
+
+{% endblock  %}

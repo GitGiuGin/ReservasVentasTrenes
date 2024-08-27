@@ -2,23 +2,23 @@
 
 {% block  content %}
 
-<form action="POST">
+<form action="{% url 'cliente_registrar' %}" method="POST"> {% csrf_token %}
     <label for="txtNombre">Nombre: </label>
-    <input type="text" placeholder="Nombre" required> <br>
+    <input type="text" name="txtNombre" placeholder="Nombre" required> <br>
     <label for="txtApellidoPaterno">Apellido Paterno: </label>
-    <input type="text" placeholder="Ap. Paterno" required> <br>
+    <input type="text" name="txtApellidoPaterno" placeholder="Ap. Paterno" required> <br>
     <label for="txtApellidoMaterno">Apellido Materno: </label>
-    <input type="text" placeholder="Ap. Materno" required> <br>
+    <input type="text" name="txtApellidoMaterno" placeholder="Ap. Materno" required> <br>
     <label for="txtCorreo">Correo: </label>
-    <input type="text" placeholder="Correo" required> <br>
+    <input type="text" name="txtCorreo" placeholder="Correo" required> <br>
     <label for="txtTelefono">Telefono: </label>
-    <input type="text" placeholder="Telefono" required> <br>
+    <input type="text" name="txtTelefono" placeholder="Telefono" required> <br>
     <label for="txtDireccion">Direccion: </label>
-    <input type="text" placeholder="Direccion" required> <br>
+    <input type="text" name="txtDireccion" placeholder="Direccion" required> <br>
     <label for="txtContraseña">Contraseña: </label>
-    <input type="text" placeholder="Contraseña" required> <br>
-    <label for="txtConfContraseña">Confirmar contraseña: </label>
-    <input type="text" placeholder="Confirmar contraseña" required> <br>
+    <input type="text" name="txtContraseña" placeholder="Contraseña" required> <br>
+    <!-- <label for="txtConfContraseña">Confirmar contraseña: </label>
+    <input type="text" placeholder="Confirmar contraseña" required> <br> -->
     <input type="submit" value="Guardar">
 
 </form>

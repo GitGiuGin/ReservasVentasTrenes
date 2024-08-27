@@ -8,7 +8,7 @@ class Cliente (models.Model):
     correo = models.CharField(max_length=128, verbose_name="Correo")
     telefono = models.CharField(max_length=15, verbose_name="Telefono")
     direccion = models.CharField(max_length=255, verbose_name="Direccion")
-    contraseña = models.CharField(max_length=254, verbose_name="Contraseña")
+    contraseña = models.CharField(max_length=128, default='defaultpassword', verbose_name="Contraseña")
     
     class Meta:
         verbose_name = "Cliente"
@@ -22,17 +22,4 @@ class Cliente (models.Model):
     def __str__(self):
         return self.nombre_completo()
     
-    def registroCliente():
-        pass
-    
-    def editarClienteAdministrador():
-        pass
-    
-    def editarCliente(id):
-        id = Cliente.objects.get_id(id = id)
-        
-    def editarDatosPersonalesCliente():
-        id = Cliente.objects.get_id(id = id)
-        
-    def cambiarContrasena(id):
-        id = Cliente.objects.get_id(id = id)
+

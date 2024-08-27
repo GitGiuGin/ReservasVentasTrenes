@@ -1,5 +1,5 @@
 from django.db import models
-from apps.clientes.models import Tren
+from apps.trenes.models import Tren
 
 # Create your models here.
 class Ruta (models.Model):
@@ -8,7 +8,6 @@ class Ruta (models.Model):
     duracion = models.SmallIntegerField()
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     tren = models.ForeignKey(Tren, null=True, blank=True, on_delete=models.CASCADE)
-    
 
     class Meta:
         verbose_name = ("Ruta")

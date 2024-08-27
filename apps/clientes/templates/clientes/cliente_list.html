@@ -1,13 +1,26 @@
 {% extends 'base.html' %}
 
 {% block  content %}
-
-    <h1>CONSULTAR CLIENTES</h1>
-
-    <h1>CREAR TABLA CON LOS CAMPOS</h1>
-    <h2>Cliente</h2>
-    <h2>Correo</h2>
-    <h2>Telefono</h2>
-    <h2>Direccion</h2>
-
+    <table>
+        <thead>
+            <th>Cliente</th>
+            <th>Correo</th>
+            <th>Telefono</th>
+            <th>Direccion</th>
+            <th>Contraseña</th>
+        </thead>
+        <tbody>
+            {% for c in object_list %}
+            <tr>
+                <td> {{c.nombres}} {{c.apellido_paterno}} {{c.apellido_materno}} </td>
+                <td> {{c.correo}} </td>
+                <td> {{c.telefono}} </td>
+                <td> {{c.direccion}} </td>
+                <td> {{c.contraseña}} </td>
+                <td> <a href="editarCliente/{{c.id}}" class="btn btn-sm btn-block btn-info">Editar</a></td>
+                <td> <a href="eliminarCliente/{{c.id}}" class="btn btn-sm btn-block btn-danger"> Eliminar</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock  %}
