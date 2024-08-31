@@ -9,9 +9,6 @@ class Cliente (models.Model):
     telefono = models.CharField(max_length=15, verbose_name="Telefono")
     direccion = models.CharField(max_length=255, verbose_name="Direccion")
     contraseña = models.CharField(max_length=128, default='defaultpassword', verbose_name="Contraseña")
-    contraseña = models.CharField(max_length=128, default='defaultpassword', verbose_name="Contraseña")
-    contraseña = models.CharField(max_length=128, default='defaultpassword', verbose_name="Contraseña")
-    
     
     class Meta:
         verbose_name = "Cliente"
