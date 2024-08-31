@@ -31,7 +31,7 @@ def registrarReserva(request):
     return redirect('reserva_lista')
 
 #Editar Cliente
-def reservasEditar(request):
+def reservaEditar(request):
     return render(request, 'reservas/reserva_editar.html')
 
 #Eliminar Cliente
