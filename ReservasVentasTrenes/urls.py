@@ -22,4 +22,6 @@ urlpatterns = [
     path('', pageHome, name="base"),
     path('clientes/', include('apps.clientes.urls')),
     path('trenes/', include('apps.trenes.urls')),
+    path('rutas/', include('apps.rutas.urls')),
+    path('reservas/', include('apps.reservas.urls')),
 ]

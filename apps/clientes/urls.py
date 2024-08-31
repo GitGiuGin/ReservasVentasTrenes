@@ -3,7 +3,7 @@ from .views import *
 
 urlpatterns = [
     path('', index, name='clientes_index'),
-    path('register/', clientesNew, name='clientes_nuevo'),
+    path('register/', clientesForm, name='clientes_nuevo'),
     path('edit/', clientesEditar, name='clientes_editar'),
     path('list/', ClienteListView.as_view(), name='clientes_lista'),
     path('list/eliminarCliente/<int:id>', eliminarCliente), #Parte logica de eliminar cliente

@@ -22,6 +22,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href={% url 'trenes_nuevo' %}>Nuevo tren</a></li>
+                        <li><a class="dropdown-item" href={% url 'trenes_lista' %}>Consultar tren</a></li>
                         <li><a class="dropdown-item" href={% url 'trenes_lista' %}>Desactivar tren</a></li>
                     </ul>
                 </li>
@@ -36,16 +37,15 @@
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href={% url 'clientes_index' %} id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Rutas
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">Nueva ruta</a></li>
-                        <li><a class="dropdown-item" href="#">Editar ruta</a></li>
-                        <li><a class="dropdown-item" href="#">Consultar rutas</a></li>
+                        <li><a class="dropdown-item" href={% url 'ruta_nuevo' %}>Nueva ruta</a></li>
+                        <li><a class="dropdown-item" href={% url 'ruta_editar' %}>Editar ruta</a></li>
+                        <li><a class="dropdown-item" href={% url 'ruta_lista' %}>Consultar rutas</a></li>
                     </ul>
                 </li>
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
             </div>
             <div class="navbar-nav ms-auto">
                 <a class="nav-link text-white" href="#">Iniciar Sesion</a>
