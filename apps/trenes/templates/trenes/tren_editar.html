@@ -1,16 +1,19 @@
 {% extends 'base.html' %}
 
-{% block  content %}
+{% block content %}
 
 <form action="{% url 'tren_editar' %}" method="POST"> {% csrf_token %}
-    <label for="txtNombre">Nombre: </label>
-    <input type="text" name="txtNombre" placeholder="Nombre" required> <br>
-    <label for="txtCapacidad">Capacidad: </label>
-    <input type="number" name="txtCapacidad" placeholder="Ap. Paterno" required> <br>
-    <!-- <label for="txtConfContraseña">Confirmar contraseña: </label>
-    <input type="text" placeholder="Confirmar contraseña" required> <br> -->
+
+    <p>Tren de servicio: {{tren.nombre}}</p>
+    <input type="hidden" name="id" value="{{tren.id}}">
+    <label for="txtEstado">Estado: </label>
+    <select id="opciones"  name="txtEstado">
+        <option value="True" {% if tren.estado %}selected{% endif %}>Operativo</option>
+        <option value="False" {% if not tren.estado %}selected{% endif %}>Fuera de servicio</option>
+    </select>
+    <br>
     <input type="submit" value="Guardar">
 
 </form>
 
-{% endblock  %}
+{% endblock %}

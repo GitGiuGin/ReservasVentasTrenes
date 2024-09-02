@@ -2,19 +2,16 @@
 
 {% block  content %}
 
-<form action="POST">
-    <p>AQUI VA EL NOMBRE COMPLETO DEL CLIENTE (NO SE PUEDE EDITAR)</p>
+<form action="{% url 'clientes_editar' %}" method="POST"> {% csrf_token %}
+    <p>Cliente: {{cliente.apellido_paterno}} {{cliente.apellido_materno}} {{cliente.nombres}}</p>
+    <input type="hidden" name="id" value="{{cliente.id}}">
     <label for="txtCorreo">Correo: </label>
-    <input type="text" placeholder="Correo" required> <br>
+    <input type="text" value="{{cliente.correo}}" name="txtCorreo" placeholder="Correo" required> <br>
     <label for="txtTelefono">Telefono: </label>
-    <input type="text" placeholder="Telefono" required> <br>
+    <input type="text" value="{{cliente.telefono}}" name="txtTelefono" placeholder="Telefono" required> <br>
     <label for="txtDireccion">Direccion: </label>
-    <input type="text" placeholder="Direccion" required> <br>
-    <label for="txtContraseña">Contraseña: </label>
-    <input type="text" placeholder="Contraseña" required> <br>
-    <label for="txtConfContraseña">Confirmar contraseña: </label>
-    <input type="text" placeholder="Confirmar contraseña" required> <br>
-
+    <input type="text" value="{{cliente.direccion}}" name="txtDireccion" placeholder="Direccion" required> <br>
+    <input type="submit" value="Guardar">
 </form>
 
 {% endblock  %}

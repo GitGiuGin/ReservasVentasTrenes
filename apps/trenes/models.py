@@ -15,4 +15,6 @@ class Tren (models.Model):
     def __str__(self):
         return self.nombre
 
-
+    @property
+    def estado_display(self):
+        return "Operativo" if self.estado else "Fuera de servicio"

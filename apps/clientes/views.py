@@ -31,8 +31,26 @@ def registrarCliente(request):
     return redirect('clientes_lista')
 
 #Editar Cliente
-def clientesEditar(request):
-    return render(request, 'clientes/cliente_editar.html')
+def clientesEdicion(request, id):
+    cliente = Cliente.objects.get(id=id)
+    data = {
+        'cliente': cliente
+    }
+    return render(request, 'clientes/cliente_editar.html', data)
+
+def editarCliente(request):
+    id = request.POST['id']
+    correo = request.POST['txtCorreo']
+    telefono = request.POST['txtTelefono']
+    direccion = request.POST['txtDireccion']
+
+    cliente = Cliente.objects.get(id=id)
+    cliente.correo = correo
+    cliente.telefono = telefono
+    cliente.direccion = direccion
+    cliente.save()
+    
+    return redirect('clientes_lista')
 
 #Eliminar Cliente
 def eliminarCliente (request, id):

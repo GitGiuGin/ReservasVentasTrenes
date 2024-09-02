@@ -24,12 +24,31 @@ def registrarRuta (request):
         )
     return redirect('rutas_lista')
 
+#Editar Ruta
+def rutaEdicion(request, id):
+    ruta = Ruta.objects.get(id=id)
+    data = {
+        'ruta': ruta
+    }
+    return render(request, 'rutas/ruta_editar.html', data)
+
 def editarRuta(request):
-    return render(request, 'rutas/ruta_editar.html')
+    id = request.POST['id']
+    origen = request.POST['txtOrigen']
+    destino = request.POST['txtDestino']
+    precio = request.POST['txtPrecio']
+
+    ruta = Ruta.objects.get(id=id)
+    ruta.origen = origen
+    ruta.destino = destino
+    ruta.precio = precio
+    ruta.save()
+    
+    return redirect('ruta_lista')
 
 def eliminarRuta (request, id):
-    tren = Ruta.objects.get(id=id)
-    tren.delete()
+    ruta = Ruta.objects.get(id=id)
+    ruta.delete()
     return redirect('rutas_lista')
 
 class RutaListView (ListView):

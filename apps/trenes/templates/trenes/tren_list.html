@@ -12,9 +12,8 @@
             <tr>
                 <td> {{t.nombre}} </td>
                 <td> {{t.capacidad}} </td>
-                <td> {{t.estado}} </td>
-                <td> <a href="editarTren/{{t.id}}" class="btn btn-sm btn-block btn-info">Editar</a></td>
-                <td> <a href="eliminarTren/{{t.id}}" class="btn btn-sm btn-block btn-danger"> Desactivar</a></td>
+                <td> {{t.estado_display}} </td>
+                <td> <a href="edicionTren/{{t.id}}" class="btn btn-sm btn-block btn-info">Editar</a></td>
             </tr>
             {% endfor %}
         </tbody>
