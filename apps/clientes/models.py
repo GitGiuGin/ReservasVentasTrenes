@@ -9,9 +9,7 @@ class Cliente (models.Model):
     telefono = models.CharField(max_length=15, verbose_name="Telefono")
     direccion = models.CharField(max_length=255, verbose_name="Direccion")
     contraseña = models.CharField(max_length=128, default='defaultpassword', verbose_name="Contraseña")
-    contraseña = models.CharField(max_length=128, default='defaultpassword', verbose_name="Contraseña")
-    contraseña = models.CharField(max_length=128, default='defaultpassword', verbose_name="Contraseña")
-    
+    estado = models.BooleanField(default=True)
     
     class Meta:
         verbose_name = "Cliente"
@@ -24,5 +22,9 @@ class Cliente (models.Model):
     
     def __str__(self):
         return self.nombre_completo()
+    
+    @property
+    def estado_display(self):
+        return "Activo" if self.estado else "Inactivo"
     
 

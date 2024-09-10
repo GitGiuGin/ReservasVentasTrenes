@@ -16,6 +16,3 @@ class Ruta (models.Model):
 
     def ruta_completa(self):
         return "{} - {}".format(self.orgien, self.destino)
-
-    
-

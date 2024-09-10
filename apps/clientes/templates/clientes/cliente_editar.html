@@ -1,20 +1,63 @@
 {% extends 'base.html' %}
 
-{% block  content %}
+{% block content %}
 
-<form action="POST">
-    <p>AQUI VA EL NOMBRE COMPLETO DEL CLIENTE (NO SE PUEDE EDITAR)</p>
-    <label for="txtCorreo">Correo: </label>
-    <input type="text" placeholder="Correo" required> <br>
-    <label for="txtTelefono">Telefono: </label>
-    <input type="text" placeholder="Telefono" required> <br>
-    <label for="txtDireccion">Direccion: </label>
-    <input type="text" placeholder="Direccion" required> <br>
-    <label for="txtContraseña">Contraseña: </label>
-    <input type="text" placeholder="Contraseña" required> <br>
-    <label for="txtConfContraseña">Confirmar contraseña: </label>
-    <input type="text" placeholder="Confirmar contraseña" required> <br>
+<form action="{% url 'clientes_editar' %}" method="POST" class="p-4 shadow-lg rounded" style="max-width: 600px; margin: auto; background-color: #f8f9fa;"> 
+    {% csrf_token %}
+    <input type="hidden" value="{{cliente.id}}" name="id">
+    <p class="text-center font-weight-bold mb-4" style="font-size: 1.25rem; color: #000000;">
+        Cliente: {{cliente.nombres}} {{cliente.apellido_paterno}} {{cliente.apellido_materno}}
+    </p>
 
+    <div class="form-group">
+        <label for="txtCorreo">Correo:</label>
+        <input type="email" class="form-control" value="{{cliente.correo}}" id="txtCorreo" name="txtCorreo" placeholder="Correo" required>
+    </div>
+
+    <div class="form-group">
+        <label for="txtTelefono">Teléfono:</label>
+        <input type="text" class="form-control" value="{{cliente.telefono}}" id="txtTelefono" name="txtTelefono" placeholder="Teléfono" required>
+    </div>
+
+    <div class="form-group">
+        <label for="txtDireccion">Dirección:</label>
+        <input type="text" class="form-control" value="{{cliente.direccion}}" id="txtDireccion" name="txtDireccion" placeholder="Dirección" required>
+    </div>
+
+    <!--
+
+    <div class="form-group">
+        <label for="txtContraseña">Contraseña:</label>
+        <input type="password" class="form-control" id="txtContraseña" name="txtContraseña" placeholder="Contraseña"
+            required>
+    </div>
+
+    <div class="form-group">
+        <label for="txtConfContraseña">Confirmar Contraseña:</label>
+        <input type="password" class="form-control" id="txtConfContraseña" name="txtConfContraseña"
+            placeholder="Confirmar Contraseña" required>
+    </div>
+    
+    -->
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <a href={% url 'clientes_lista' %} type="submit" class="btn btn-dark btn-block mt-3"
+                style="background-color: #000000; border-color: #000000"
+                onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#2c2c2c';"
+                onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#000000';">
+                <i class="fas fa-save"></i> Cancelar
+        </a>
+        </div>
+        <div class="form-group col-md-6">
+            <button type="submit" class="btn btn-dark btn-block mt-3"
+                style="background-color: #000000; border-color: #000000"
+                onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#2c2c2c';"
+                onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#000000';">
+                <i class="fas fa-save"></i> Confirmar
+            </button>
+        </div>
+    </div>
 </form>
 
-{% endblock  %}
+{% endblock %}

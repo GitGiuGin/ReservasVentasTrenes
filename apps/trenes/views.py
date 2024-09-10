@@ -11,20 +11,28 @@ def trenesForm(request):
 
 def registrarTren (request):
     nombre = request.POST['txtNombre']
-    capacidad = request.POST['txtCapacidad']
 
     tren = Tren.objects.create(
         nombre=nombre, 
-        capacidad=capacidad,
         )
     return redirect('trenes_lista')
 
-def editarTren(request):
-    return render(request, 'trenes/tren_editar.html')
-
-def eliminarTren (request, id):
+#Editar tren
+def trenEdicion(request, id):
     tren = Tren.objects.get(id=id)
-    tren.delete()
+    data = {
+        'tren': tren
+    }
+    return render(request, 'trenes/tren_editar.html', data)
+
+def editarTren(request):
+    id = request.POST['id']
+    estado = request.POST['txtEstado']
+
+    tren = Tren.objects.get(id=id)
+    tren.estado = estado
+    tren.save()
+    
     return redirect('trenes_lista')
 
 class TrenListView (ListView):
@@ -36,6 +44,11 @@ class TrenListView (ListView):
         context['titulo'] = 'Gesion de Trenes'
         return context
 
+def activarTren():
+    pass
+
+def desactivarTren():
+    pass
 #def trenesList(request):
 #    listarTrenes = Tren.objects.all()
 #
