@@ -1,7 +1,40 @@
 {% extends 'base.html' %}
 
-{% block  content %}
+{% block content %}
 
-<h1>FORMULARIO DE CONSULTA DE RUTAS</h1>
 
-{% endblock  %}
+<h3 class="text-center mb-4">Rutas Registradas</h3>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Ruta</th>
+                <th>Fecha de Salida</th>
+                <th>Hora de Salida</th>
+                <!-- <th>Tipo de Tren</th> -->
+                <th>Asientos Disponibles</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="routeTableBody">
+            {% for r in object_list %}
+            <tr>
+                <td> {{r.origen}} - {{r.destino}}</td>
+                <td> {{r.fecha_salida}} </td>
+                <td> {{r.hora_salida}} </td>
+                <td>  </td> <!-- asientos disponibles -->
+                <td>
+                    <a href="edicionRuta/{{r.id}}" class="btn btn-sm btn-info m-1">
+                        <i class="fas fa-edit"></i> Editar
+                    </a>
+                    <a href="eliminarRuta/{{r.id}}" class="btn btn-sm btn-danger m-1">
+                        <i class="fas fa-trash-alt"></i> Desactivar
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

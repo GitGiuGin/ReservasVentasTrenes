@@ -43,6 +43,7 @@ def editarCliente(request):
     correo = request.POST['txtCorreo']
     telefono = request.POST['txtTelefono']
     direccion = request.POST['txtDireccion']
+    estado = request
 
     cliente = Cliente.objects.get(id=id)
     cliente.correo = correo

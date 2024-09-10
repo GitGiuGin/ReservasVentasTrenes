@@ -11,11 +11,9 @@ def trenesForm(request):
 
 def registrarTren (request):
     nombre = request.POST['txtNombre']
-    capacidad = request.POST['txtCapacidad']
 
     tren = Tren.objects.create(
         nombre=nombre, 
-        capacidad=capacidad,
         )
     return redirect('trenes_lista')
 

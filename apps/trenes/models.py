@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 class Tren (models.Model):
     nombre = models.CharField(max_length=50, verbose_name="Nombre")
-    capacidad = models.SmallIntegerField()
+    capacidad = models.SmallIntegerField(default=20)
     estado = models.BooleanField(default=True)
 
     class Meta:

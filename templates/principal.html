@@ -1,7 +1,53 @@
+<div class="container text-center my-5 py-4 bg-dark text-white rounded shadow">
+    <h1 class="display-3 mb-4">TRENES BOLIVIA</h1>
+    <p class="lead">
+        Bienvenido a Trenes Bolivia, tu plataforma de referencia para la reserva y consulta de servicios de tren en
+        Bolivia. Aquí puedes encontrar horarios, rutas y todo lo necesario para planificar tu viaje en tren.
+    </p>
+</div>
 
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Rutas de Tren Registradas</h2>
+    <div id="routesContainer">
 
-<h1>TRENES BOLIVIA</h1>
+    </div>
+</div>
 
-<p>
-    
-</p>
+<script>
+    function loadRoutes() {
+        const routes = JSON.parse(localStorage.getItem('trainRoutes')) || [];
+        const routesContainer = document.getElementById('routesContainer');
+
+        routes.forEach((route, index) => {
+            const section = document.createElement('section');
+            section.classList.add('mb-4', 'p-3', 'border', 'border-dark', 'rounded');
+
+            const sectionTitle = document.createElement('h3');
+            sectionTitle.textContent = `Ruta ${index + 1}: ${route.origen} ➔ ${route.destino}`;
+            sectionTitle.classList.add('mb-3');
+
+            const listGroup = document.createElement('ul');
+            listGroup.classList.add('list-group');
+
+            const details = [
+                `Fecha de Salida: ${route.fecha}`,
+                `Hora de Salida: ${route.hora}`,
+                `Tipo de Tren: ${route.tipoTren}`,
+                `Asientos Disponibles: ${route.asientos}`
+            ];
+
+            details.forEach(detail => {
+                const listItem = document.createElement('li');
+                listItem.textContent = detail;
+                listItem.classList.add('list-group-item');
+                listGroup.appendChild(listItem);
+            });
+
+            section.appendChild(sectionTitle);
+            section.appendChild(listGroup);
+            routesContainer.appendChild(section);
+        });
+    }
+
+    window.onload = loadRoutes;
+</script>

@@ -1,16 +1,46 @@
 {% extends 'base.html' %}
 
-{% block  content %}
+{% block content %}
 
-<form action="{% url 'tren_registrar' %}" method="POST"> {% csrf_token %}
-    <label for="txtNombre">Nombre: </label>
-    <input type="text" name="txtNombre" placeholder="Nombre" required> <br>
-    <label for="txtCapacidad">Capacidad: </label>
-    <input type="number" name="txtCapacidad" default="2" required> <br>
-    <!-- <label for="txtConfContraseña">Confirmar contraseña: </label>
-    <input type="text" placeholder="Confirmar contraseña" required> <br> -->
-    <input type="submit" value="Guardar">
+<form action="{% url 'tren_registrar' %}" method="POST" class="p-4 shadow-lg rounded"
+    style="max-width: 600px; margin: auto; background-color: #f8f9fa;">
+    {% csrf_token %}
+
+    <h2 class="text-center mb-4" style="color: #000000;">Registro de Tren</h2>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="txtNombre">Nombre: </label>
+            <input type="text" class="form-control" id="txtNombre" name="txtNombre" placeholder="Nombre" required>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="txtCapacidad">Capacidad: </label>
+            <input type="number" class="form-control" id="txtCapacidad" name="txtCapacidad" default="2" required>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <button type="submit" class="btn btn-dark btn-block mt-3"
+                style="background-color: #000000; border-color: #000000"
+                onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#2c2c2c';"
+                onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#000000';">
+                <i class="fas fa-save"></i> Cancelar
+            </button>
+        </div>
+        <div class="form-group col-md-6">
+            <button type="submit" class="btn btn-dark btn-block mt-3"
+                style="background-color: #000000; border-color: #000000"
+                onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#2c2c2c';"
+                onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#000000';">
+                <i class="fas fa-save"></i> Confirmar
+            </button>
+        </div>
+    </div>
+    </div>
+
+
 
 </form>
 
-{% endblock  %}
+{% endblock %}

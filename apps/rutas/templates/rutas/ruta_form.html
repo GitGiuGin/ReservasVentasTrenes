@@ -1,7 +1,53 @@
 {% extends 'base.html' %}
 
-{% block  content %}
+{% block content %}
 
-<h1>FORMULARIO DE REGISTRO DE RUTAS</h1>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Registro de Ruta de Tren</h2>
+    <form action="{% url 'ruta_registrar' %}" method="POST" > {% csrf_token %}
+        <div class="mb-3">
+            <label for="origen" class="form-label">Origen</label>
+            <input type="text" class="form-control" id="txtOrigen" name="txtOrigen" placeholder="Ingrese la estación de origen" required>
+            <div class="invalid-feedback">Por favor, ingrese la estación de origen.</div>
+        </div>
+        <div class="mb-3">
+            <label for="destino" class="form-label">Destino</label>
+            <input type="text" class="form-control" id="txtDestino" name="txtDestino" placeholder="Ingrese la estación de destino" required>
+            <div class="invalid-feedback">Por favor, ingrese la estación de destino.</div>
+        </div>
+        <div class="mb-3">
+            <label for="fecha" class="form-label">Fecha de Salida</label>
+            <input type="date" class="form-control" id="dateFecha" name="dateFecha" required>
+            <div class="invalid-feedback">Por favor, seleccione una fecha de salida.</div>
+        </div>
+        <div class="mb-3">
+            <label for="hora" class="form-label">Hora de Salida</label>
+            <input type="time" class="form-control" id="txtHora" name="txtHora" required>
+            <div class="invalid-feedback">Por favor, seleccione una hora de salida.</div>
+        </div>
+        <!--
+        <div class="mb-3">
+            <label for="tipoTren" class="form-label">Tipo de Tren</label>
+            <select class="form-select" id="tipoTren" required>
+                <option selected disabled value="">Seleccione el tipo de tren</option>
+                <option value="rapido">Rápido</option>
+                <option value="interurbano">Interurbano</option>
+                <option value="regional">Regional</option>
+                <option value="carga">Carga</option>
+            </select>
+            <div class="invalid-feedback">Por favor, seleccione el tipo de tren.</div>
+        </div>
+        -->
+        <div class="mb-3">
+            <label for="asientos" class="form-label">Número de Asientos Disponibles</label>
+            <input type="number" class="form-control" id="txtAsientos" name="txtAsientos" placeholder="Ingrese el número de asientos disponibles" min="1" required>
+            <div class="invalid-feedback">Por favor, ingrese un número válido de asientos disponibles.</div>
+        </div>
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-dark">Registrar Ruta</button>
+            <a href="javascript:history.back()" type="reset" class="btn btn-dark">Cancelar</a>
+        </div>
+    </form>
+</div>
 
-{% endblock  %}
+{% endblock %}

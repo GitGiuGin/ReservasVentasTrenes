@@ -19,7 +19,7 @@ def registrarReserva(request):
     direccion = request.POST['txtDireccion']
     contrasena = request.POST['txtContraseña']
 
-    cliente = Reserva.objects.create(
+    reserva = Reserva.objects.create(
         nombres=nombre, 
         apellido_paterno=apellido_paterno,
         apellido_materno=apellido_materno,
@@ -49,11 +49,3 @@ class ReservaListView (ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Gestion de Reservas'
         return context
-
-#def clientesList(request):
-#    listarClientes = Cliente.objects.all()
-#
-#    data = {
-#        'titulo': 'Gestion clientes',
-#        'clientes': listarClientes
-#    }
