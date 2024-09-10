@@ -7,5 +7,5 @@ urlpatterns = [
     path('edit/', reservaEditar, name='reserva_editar'),
     path('list/', ReservaListView.as_view(), name='reserva_lista'),
     path('list/eliminarReserva/<int:id>', eliminarReserva), #Parte logica de eliminar cliente
-    path('registrarReserva/', registrarReserva, name='reserva_registrar'), #Parte logica del registro de cliente
+    path('registrarReserva/', registrarReserva, name='reserva_registrar'),
 ]

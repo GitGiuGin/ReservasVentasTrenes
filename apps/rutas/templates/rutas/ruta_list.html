@@ -9,9 +9,12 @@
         <thead class="table-dark">
             <tr>
                 <th>Ruta</th>
-                <th>Fecha de Salida</th>
-                <th>Hora de Salida</th>
+                <th>Dia de Salida</th>
+                <th>Duracion</th>
+                <th>Dia de Retorno</th>
+                <th>Costo</th>
                 <!-- <th>Tipo de Tren</th> -->
+                <th>Tren</th>
                 <th>Asientos Disponibles</th>
                 <th>Acciones</th>
             </tr>
@@ -20,8 +23,11 @@
             {% for r in object_list %}
             <tr>
                 <td> {{r.origen}} - {{r.destino}}</td>
-                <td> {{r.fecha_salida}} </td>
-                <td> {{r.hora_salida}} </td>
+                <td> {{r.dia_salida}} </td>
+                <td> {{r.duracion_formateada}} </td>
+                <td> {{r.dia_retorno}} </td>
+                <td> {{r.precio_bs}} </td>
+                <td> {{r.tren}} </td>
                 <td>  </td> <!-- asientos disponibles -->
                 <td>
                     <a href="edicionRuta/{{r.id}}" class="btn btn-sm btn-info m-1">

@@ -8,5 +8,6 @@ urlpatterns = [
     path('list/edicionRuta/<int:id>', rutaEdicion, name='ruta_edicion'),
     path('list/',RutaListView.as_view(), name='ruta_lista'),
     path('list/eliminarRuta/<int:id>', eliminarRuta),
-    path('list/editarRuta', editarRuta, name="ruta_editar"),   
+    path('list/editarRuta', editarRuta, name="ruta_editar"),
+    path('planificaTuViaje/', rutas_disponibles, name="ruta_disponible"),  
 ]

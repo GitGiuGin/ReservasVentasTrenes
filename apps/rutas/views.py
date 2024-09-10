@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
+from django.db import models
 from django.views.generic import ListView
 from .models import Ruta
+from apps.trenes.models import Tren
 
 # Create your views here.
 
@@ -8,21 +10,40 @@ def index (request):
     pass
 
 def rutaForm(request):
-    return render(request, 'rutas/ruta_form.html')
+    trenes_activos = Tren.objects.filter(estado=True)
+    return render(request, 'rutas/ruta_form.html', {'trenes': trenes_activos})
 
-def registrarRuta (request):
-    origen = request.POST['txtOrigen']
-    destino = request.POST['txtDestino']
-    duracion = request.POST['numDuracion']
-    precio = request.POST['txtPrecio']
+def registrarRuta(request):
+    if request.method == 'POST':
+        origen = request.POST.get('txtOrigen')
+        destino = request.POST.get('txtDestino')
+        duracion = request.POST.get('numDuracion')
+        dia_salida = request.POST.get('selectDiaSalida')
+        dia_retorno = request.POST.get('selectDiaRetorno')
+        precio = request.POST.get('numPrecio')
+        tren_id = request.POST.get('selectTren')
 
-    tren = Ruta.objects.create(
-        origen=origen,
-        destino=destino,
-        duracion=duracion,
-        precio=precio
+        dias_disponibles = ', '.join(request.POST.getlist('selectDiasDisponibles'))  # Maneja la selección múltiple
+
+        tren = Tren.objects.get(id=tren_id) if tren_id else None
+
+        nueva_ruta = Ruta(
+            origen=origen,
+            destino=destino,
+            duracion=duracion,
+            dia_salida=dia_salida,
+            dia_retorno=dia_retorno,
+            precio=precio,
+            tren=tren,
+            dias_disponibles=dias_disponibles
         )
-    return redirect('rutas_lista')
+        nueva_ruta.save()
+
+        return redirect('ruta_lista')  # Cambia 'ruta_exito' por la URL que quieras para redirigir
+
+    trenes = Tren.objects.all()
+
+    return render(request, 'ruta_registrar.html', {'trenes': trenes})
 
 #Editar Ruta
 def rutaEdicion(request, id):
@@ -59,3 +80,15 @@ class RutaListView (ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Gesion de Rutas'
         return context
+    
+def rutas_disponibles(request):
+    query = request.GET.get('searchRuta', '')
+    rutas = Ruta.objects.filter(tren__estado=True).select_related('tren')
+
+    if query:
+        rutas = rutas.filter(
+            models.Q(origen__icontains=query) |
+            models.Q(destino__icontains=query)
+        )
+    
+    return render(request, 'rutas/rutas_disponibles.html', {'rutas': rutas})

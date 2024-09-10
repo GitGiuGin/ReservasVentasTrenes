@@ -3,11 +3,17 @@ from apps.trenes.models import Tren
 
 # Create your models here.
 class Ruta (models.Model):
-    origen = models.CharField(max_length=50, verbose_name="Estacion de origen")
-    destino = models.CharField(max_length=50, verbose_name="Estacion de destino")
+    ORIGEN_CHOICES = [('estacion1', 'Estación 1'), ('estacion2', 'Estación 2')]  # Ejemplo de opciones
+    DESTINO_CHOICES = [('estacionA', 'Estación A'), ('estacionB', 'Estación B')]  # Ejemplo de opciones
+    
+    origen = models.CharField(max_length=50, verbose_name="Estación de origen", choices=ORIGEN_CHOICES)
+    destino = models.CharField(max_length=50, verbose_name="Estación de destino", choices=DESTINO_CHOICES)
     duracion = models.SmallIntegerField()
+    dia_salida = models.CharField(max_length=50, verbose_name="Dia Salida", null=True, blank=True)
+    dia_retorno = models.CharField(max_length=50, verbose_name="Dia Retorno", null=True, blank=True)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     tren = models.ForeignKey(Tren, null=True, blank=True, on_delete=models.CASCADE)
+    dias_disponibles = models.CharField(max_length=50, verbose_name="Días Disponibles", null=True)  
 
     class Meta:
         verbose_name = ("Ruta")
@@ -15,4 +21,12 @@ class Ruta (models.Model):
         db_table = 'ruta'
 
     def ruta_completa(self):
-        return "{} - {}".format(self.orgien, self.destino)
+        return "{} - {}".format(self.origen, self.destino)
+    
+    def duracion_formateada(self):
+        horas = self.duracion // 60
+        minutos = self.duracion % 60
+        return f"{horas}:{minutos:02d} hrs"
+    
+    def precio_bs(self):
+        return f"{self.precio} Bs"
