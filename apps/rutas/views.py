@@ -47,6 +47,7 @@ def registrarRuta(request):
 
 #Editar Ruta
 def rutaEdicion(request, id):
+    trenes_activos = Tren.objects.filter(estado=True)
     ruta = Ruta.objects.get(id=id)
     data = {
         'ruta': ruta
