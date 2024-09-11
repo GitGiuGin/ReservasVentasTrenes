@@ -87,8 +87,7 @@ def rutas_disponibles(request):
 
     if query:
         rutas = rutas.filter(
-            models.Q(origen__icontains=query) |
-            models.Q(destino__icontains=query)
+            models.Q(origen__icontains=query) | models.Q(destino__icontains=query)
         )
     
     return render(request, 'rutas/rutas_disponibles.html', {'rutas': rutas})
