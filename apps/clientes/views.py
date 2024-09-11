@@ -63,16 +63,25 @@ def eliminarCliente (request, id):
 class ClienteListView (ListView):
     model = Cliente
     template_name = 'clientes/cliente_list.html'
+    context_object_name = 'object_list'
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        search_cliente = self.request.GET.get('searchCliente', '')
+
+        if search_cliente:
+            # Filtramos por nombre, apellido paterno y apellido materno
+            queryset = queryset.filter(
+                nombres__icontains=search_cliente
+            ) | queryset.filter(
+                apellido_paterno__icontains=search_cliente
+            ) | queryset.filter(
+                apellido_materno__icontains=search_cliente
+            )
+        
+        return queryset
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Gesion de Clientes'
         return context
-
-#def clientesList(request):
-#    listarClientes = Cliente.objects.all()
-#
-#    data = {
-#        'titulo': 'Gestion clientes',
-#        'clientes': listarClientes
-#    }
