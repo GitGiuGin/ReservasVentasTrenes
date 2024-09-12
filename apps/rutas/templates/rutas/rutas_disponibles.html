@@ -32,7 +32,7 @@
                 <td>{{ ruta.precio_bs }}</td>
                 <td>{{ ruta.tren.nombre }}</td>
                 <td>
-                    <a href="reservarAsiento/{{ruta.id}}" class="btn btn-sm btn-info m-1">
+                    <a href={% url 'seleccion_asiento' %} class="btn btn-sm btn-info m-1">
                         <i class="fas fa-edit"></i> Reservar asientos
                     </a>
                 </td>

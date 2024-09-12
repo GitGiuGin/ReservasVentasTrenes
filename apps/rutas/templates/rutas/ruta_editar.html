@@ -7,7 +7,6 @@
         style="max-width: 600px; margin: auto; background-color: #f8f9fa;">
         {% csrf_token %}
         <input type="hidden" name="id" value="{{ ruta.id }}">
-        <input type="hidden" value="{{cliente.id}}" name="id">
         <p class="text-center font-weight-bold mb-2" style="font-size: 1.25rem; color: #000000;">
             Ruta: {{ruta.origen}} - {{ruta.destino}}
         </p>

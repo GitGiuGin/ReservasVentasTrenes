@@ -7,8 +7,9 @@ def liberarAsiento():
 def obtenerEstado():
     pass
 
-def reservasAsiento():
-    pass
+def reservasAsiento(request):
+    # Aquí colocas la lógica para manejar la selección de asientos
+    return render(request, 'asientos/seleccion_asiento.html')
 
 def verificarDisponibilidad():
     pass
