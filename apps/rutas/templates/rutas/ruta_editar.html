@@ -6,29 +6,25 @@
     <form action="{% url 'ruta_editar' %}" method="POST" class="p-4 shadow-lg rounded"
         style="max-width: 600px; margin: auto; background-color: #f8f9fa;">
         {% csrf_token %}
+        <input type="hidden" name="id" value="{{ ruta.id }}">
         <input type="hidden" value="{{cliente.id}}" name="id">
-        <p class="text-center font-weight-bold mb-4" style="font-size: 1.25rem; color: #000000;">
+        <p class="text-center font-weight-bold mb-2" style="font-size: 1.25rem; color: #000000;">
             Ruta: {{ruta.origen}} - {{ruta.destino}}
+        </p>
+        <p class="text-center font-weight-bold mb-4" style="font-size: 1.25rem; color: #000000;">
+            Duracion: {{ruta.duracion_formateada}}
         </p>
 
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="duracion" class="form-label">Duración (en minutos)</label>
-                <input type="number" class="form-control" id="numDuracion" name="numDuracion"
-                    placeholder="Ingrese la duración de la ruta" min="1" required>
-                <div class="invalid-feedback">Por favor, ingrese una duración válida.</div>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
                 <label for="dias_disponibles" class="form-label">Días de salida</label>
                 <select class="form-control" id="selectDiasDisponibles" name="selectDiaSalida" required>
-                    <option value="Lunes">Lunes</option>
-                    <option value="Martes">Martes</option>
-                    <option value="Miércoles">Miércoles</option>
-                    <option value="Jueves">Jueves</option>
-                    <option value="Viernes">Viernes</option>
-                    <option value="Sábado">Sábado</option>
+                    <option value="Lunes" {% if ruta.dia_salida == "Lunes" %}selected{% endif %}>Lunes</option>
+                    <option value="Martes" {% if ruta.dia_salida == "Martes" %}selected{% endif %}>Martes</option>
+                    <option value="Miércoles" {% if ruta.dia_salida == "Miércoles" %}selected{% endif %}>Miércoles</option>
+                    <option value="Jueves" {% if ruta.dia_salida == "Jueves" %}selected{% endif %}>Jueves</option>
+                    <option value="Viernes" {% if ruta.dia_salida == "Viernes" %}selected{% endif %}>Viernes</option>
+                    <option value="Sábado" {% if ruta.dia_salida == "Sábado" %}selected{% endif %}>Sábado</option>
                     <!-- Añade más días si es necesario -->
                 </select>
                 <div class="invalid-feedback">Por favor, seleccione los días en que la ruta está disponible.</div>
@@ -36,12 +32,12 @@
             <div class="form-group col-md-6">
                 <label for="dias_disponibles" class="form-label">Días de retorno</label>
                 <select class="form-control" id="selectDiasDisponibles" name="selectDiaRetorno" required>
-                    <option value="Lunes">Lunes</option>
-                    <option value="Martes">Martes</option>
-                    <option value="Miércoles">Miércoles</option>
-                    <option value="Jueves">Jueves</option>
-                    <option value="Viernes">Viernes</option>
-                    <option value="Sábado">Sábado</option>
+                    <option value="Lunes" {% if ruta.dia_retorno  == "Lunes" %}selected{% endif %}>Lunes</option>
+                    <option value="Martes" {% if ruta.dia_retorno  == "Martes" %}selected{% endif %}>Martes</option>
+                    <option value="Miércoles" {% if ruta.dia_retorno  == "Miércoles" %}selected{% endif %}>Miércoles</option>
+                    <option value="Jueves" {% if ruta.dia_retorno == "Jueves" %}selected{% endif %}>Jueves</option>
+                    <option value="Viernes" {% if ruta.dia_retorno  == "Viernes" %}selected{% endif %}>Viernes</option>
+                    <option value="Sábado" {% if ruta.dia_retorno  == "Sábado" %}selected{% endif %}>Sábado</option>
                     <!-- Añade más días si es necesario -->
                 </select>
                 <div class="invalid-feedback">Por favor, seleccione los días en que la ruta está disponible.</div>
@@ -50,23 +46,22 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="precio" class="form-label">Precio</label>
-                <input type="number" class="form-control" id="numPrecio" name="numPrecio"
+                <input type="number" class="form-control" value="{{ ruta.precio }}" id="numPrecio" name="numPrecio"
                     placeholder="Ingrese el precio de la ruta" step="0.01" min="0" required>
                 <div class="invalid-feedback">Por favor, ingrese un precio válido.</div>
             </div>
             <div class="form-group col-md-6">
                 <label for="tren" class="form-label">Tren</label>
                 <select class="form-control" id="selectTren" name="selectTren">
-                    <option value="">Seleccione un tren </option>
                     {% for tren in trenes %}
-                    <option value="{{ tren.id }}">{{ tren.nombre }}</option>
+                    <option value="{{ tren.id }}" {% if ruta.tren.id == tren.id %}selected{% endif %}>{{ tren.nombre }}</option>
                     {% endfor %}
                 </select>
                 <div class="invalid-feedback">Por favor, seleccione un tren si corresponde.</div>
             </div>
         </div>
         <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-dark">Registrar Ruta</button>
+            <button type="submit" class="btn btn-dark">Actualizar Ruta</button>
             <a href="javascript:history.back()" type="reset" class="btn btn-dark">Cancelar</a>
         </div>
     </form>

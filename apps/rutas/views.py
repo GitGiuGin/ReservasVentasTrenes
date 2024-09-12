@@ -50,20 +50,25 @@ def rutaEdicion(request, id):
     trenes_activos = Tren.objects.filter(estado=True)
     ruta = Ruta.objects.get(id=id)
     data = {
-        'ruta': ruta
+        'ruta': ruta,
+        'trenes': trenes_activos
     }
     return render(request, 'rutas/ruta_editar.html', data)
 
 def editarRuta(request):
     id = request.POST['id']
-    origen = request.POST['txtOrigen']
-    destino = request.POST['txtDestino']
-    precio = request.POST['txtPrecio']
+    dia_salida = request.POST['selectDiaSalida']
+    dia_retorno = request.POST['selectDiaRetorno']
+    precio = request.POST['numPrecio']
+    tren = request.POST['selectTren']
 
     ruta = Ruta.objects.get(id=id)
-    ruta.origen = origen
-    ruta.destino = destino
+    tren = Tren.objects.get(id=tren)
+    
+    ruta.dia_salida = dia_salida
+    ruta.dia_retorno = dia_retorno
     ruta.precio = precio
+    ruta.tren = tren
     ruta.save()
     
     return redirect('ruta_lista')
