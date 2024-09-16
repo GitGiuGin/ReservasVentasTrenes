@@ -30,13 +30,13 @@ def obtenerEstado(asiento_id):
 def formSelectAsiento(request, id):
     fecha_actual = obtenerFechaActual(request)
     ruta = Ruta.objects.get(id=id)
-    asientos = Asiento.objects.all()
+    asientos = Asiento.objects.values_list('numero_asiento', flat=True)
     #eserva = Reserva.objects.all()
     
     data = {
         "ruta": ruta,
         "fecha_actual": fecha_actual,
-        "asiento": asientos,
+        "asientos": list(asientos),
         #"reserva": reserva,
     }
     

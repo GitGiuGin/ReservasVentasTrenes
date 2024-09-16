@@ -49,3 +49,6 @@ class ReservaListView (ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Gestion de Reservas'
         return context
+    
+def confirmarFormReserva(request):
+    return render(request, 'reservas/reserva_form.html')
