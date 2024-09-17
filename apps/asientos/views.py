@@ -23,21 +23,32 @@ def liberarAsiento(asiento_id):
 def obtenerEstado(asiento_id):
     try:
         asiento = Asiento.objects.get(id=asiento_id)
-        return "Reservado" if asiento.estado else "Disponible"
+        if asiento.estado == 1:
+            return ""
+        else:
+            return "checked"
     except Asiento.DoesNotExist:
-        return "Asiento no encontrado"
+        return False
 
 def formSelectAsiento(request, id):
     fecha_actual = obtenerFechaActual(request)
     ruta = Ruta.objects.get(id=id)
-    asientos = Asiento.objects.values_list('numero_asiento', flat=True)
-    #eserva = Reserva.objects.all()
+    asientos = Asiento.objects.all()
+    
+    asientos_con_estado = []
+    for asiento in asientos:
+        estado = obtenerEstado(asiento.id)
+        asientos_con_estado.append({
+            'id': asiento.id,
+            'numero_asiento': asiento.numero_asiento,
+            'asiento': asiento,
+            'estado': estado
+        })
     
     data = {
         "ruta": ruta,
         "fecha_actual": fecha_actual,
-        "asientos": list(asientos),
-        #"reserva": reserva,
+        "asientos": asientos_con_estado,
     }
     
     return render(request, 'asientos/seleccion_asiento.html', data)
