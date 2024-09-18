@@ -50,7 +50,12 @@ class ReservaListView (ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Gestion de Reservas'
         return context
-    
+
+def precio_total(total_asientos, ruta_precio):
+    precio_total = total_asientos * float(ruta_precio)
+    precio_total_formateado = "{:.2f}".format(precio_total)
+    return precio_total_formateado
+
 def confirmarFormReserva(request):
     if request.method == 'POST':
         fechaReserva = request.POST.get('txtFechaReserva')
@@ -63,9 +68,8 @@ def confirmarFormReserva(request):
         
         # Filtra los asientos utilizando los IDs obtenidos
         asientos = Asiento.objects.filter(id__in=id_asientos_seleccionados, estado=True, ruta_id=ruta_id)
-        total_asientos = Asiento.objects.filter(id__in=id_asientos_seleccionados, estado=True, ruta_id=ruta_id).count()
-        precio_total = total_asientos * float(ruta_precio)
-        precio_total_formateado = "{:.2f}".format(precio_total)
+        total_asientos = asientos.count()
+        total_reserva = precio_total(total_asientos, ruta_precio)
         
         # Prepara los datos para renderizar
         data = {
@@ -77,7 +81,7 @@ def confirmarFormReserva(request):
             'tren': tren,
             'ruta_precio': ruta_precio,
             'total_asientos': total_asientos,
-            'precio_total': precio_total_formateado
+            'total_reserva': total_reserva
         }
         
         return render(request, 'reservas/reserva_form.html', data)
