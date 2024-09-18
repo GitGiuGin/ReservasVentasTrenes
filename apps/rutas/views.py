@@ -3,6 +3,7 @@ from django.db import models
 from django.views.generic import ListView
 from .models import Ruta
 from apps.trenes.models import Tren
+from apps.asientos.models import Asiento
 
 # Create your views here.
 
@@ -38,6 +39,34 @@ def registrarRuta(request):
             dias_disponibles=dias_disponibles
         )
         nueva_ruta.save()
+
+        # Obtener el ID de la nueva ruta
+        ruta_id = nueva_ruta.id
+
+        # Insertar asientos para la nueva ruta
+        asientos = [
+            Asiento(estado=1, numero_asiento="1A", ruta_id=ruta_id),
+            Asiento(estado=1, numero_asiento="1B", ruta_id=ruta_id),
+            Asiento(estado=1, numero_asiento="1C", ruta_id=ruta_id),
+            Asiento(estado=1, numero_asiento="1D", ruta_id=ruta_id),
+            Asiento(estado=1, numero_asiento="2A", ruta_id=ruta_id),
+            Asiento(estado=1, numero_asiento="2B", ruta_id=ruta_id),
+            Asiento(estado=1, numero_asiento="2C", ruta_id=ruta_id),
+            Asiento(estado=1, numero_asiento="2D", ruta_id=ruta_id),
+            Asiento(estado=1, numero_asiento="3A", ruta_id=ruta_id),
+            Asiento(estado=1, numero_asiento="3B", ruta_id=ruta_id),
+            Asiento(estado=1, numero_asiento="3C", ruta_id=ruta_id),
+            Asiento(estado=1, numero_asiento="3D", ruta_id=ruta_id),
+            Asiento(estado=1, numero_asiento="4A", ruta_id=ruta_id),
+            Asiento(estado=1, numero_asiento="4B", ruta_id=ruta_id),
+            Asiento(estado=1, numero_asiento="4C", ruta_id=ruta_id),
+            Asiento(estado=1, numero_asiento="4D", ruta_id=ruta_id),
+            Asiento(estado=1, numero_asiento="5A", ruta_id=ruta_id),
+            Asiento(estado=1, numero_asiento="5B", ruta_id=ruta_id),
+            Asiento(estado=1, numero_asiento="5C", ruta_id=ruta_id),
+            Asiento(estado=1, numero_asiento="5D", ruta_id=ruta_id),
+        ]
+        Asiento.objects.bulk_create(asientos)
 
         return redirect('ruta_lista')  # Cambia 'ruta_exito' por la URL que quieras para redirigir
 
@@ -78,14 +107,18 @@ def eliminarRuta (request, id):
     ruta.delete()
     return redirect('rutas_lista')
 
-class RutaListView (ListView):
-    model = Ruta
-    template_name = 'rutas/ruta_list.html'
+def verificarDisponibilidadAsiento(ruta_id):
+    asientos_disponibles = Asiento.objects.filter(ruta_id=ruta_id, estado=1).count()
+    return asientos_disponibles
+
+def rutaLista(request):
+    rutas = Ruta.objects.all()
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['titulo'] = 'Gesion de Rutas'
-        return context
+    data = {
+        'rutas': rutas,  # El queryset de rutas
+    }
+    
+    return render(request, 'rutas/ruta_list.html', data)
     
 def rutas_disponibles(request):
     query = request.GET.get('searchRuta', '')

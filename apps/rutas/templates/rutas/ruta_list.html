@@ -19,7 +19,7 @@
             </tr>
         </thead>
         <tbody id="routeTableBody">
-            {% for r in object_list %}
+            {% for r in rutas %}
             <tr>
                 <td class="align-middle p-1"> {{r.origen}} - {{r.destino}}</td>
                 <td class="text-center align-middle p-1"> {{r.dia_salida}} </td>
@@ -27,7 +27,9 @@
                 <td class="text-center align-middle p-1"> {{r.dia_retorno}} </td>
                 <td class="text-center align-middle p-1"> {{r.precio_bs}} </td>
                 <td class="align-middle p-1"> {{r.tren}} </td>
-                <td>  </td> <!-- asientos disponibles -->
+                <td class="text-center align-middle p-1"> 
+                    {{ disponibilidad_asientos.ruta.id }} asientos disponibles
+                </td> <!-- asientos disponibles -->
                 <td class="text-center align-middle p-1"> 
                     <a href="edicionRuta/{{r.id}}" class="btn btn-sm btn-info m-1">
                         <i class="fas fa-edit"></i> Editar

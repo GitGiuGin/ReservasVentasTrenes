@@ -14,3 +14,6 @@ class Asiento (models.Model):
         verbose_name_plural = "Asientos"
         db_table = 'asiento'
         ordering = ['numero_asiento']
+        
+    def __str__(self):
+        return f'{self.numero_asiento}'

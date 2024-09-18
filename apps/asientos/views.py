@@ -33,7 +33,8 @@ def obtenerEstado(asiento_id):
 def formSelectAsiento(request, id):
     fecha_actual = obtenerFechaActual(request)
     ruta = Ruta.objects.get(id=id)
-    asientos = Asiento.objects.all()
+    asientos = Asiento.objects.filter(ruta_id = ruta.id)
+    asientos_disponibles = verificarDisponibilidad(ruta_id = id)
     
     asientos_con_estado = []
     for asiento in asientos:
@@ -49,13 +50,14 @@ def formSelectAsiento(request, id):
         "ruta": ruta,
         "fecha_actual": fecha_actual,
         "asientos": asientos_con_estado,
+        'asientos_disponibles': asientos_disponibles
     }
     
     return render(request, 'asientos/seleccion_asiento.html', data)
 
 def verificarDisponibilidad(ruta_id):
-    asientos_disponibles = Asiento.objects.filter(ruta_id=ruta_id, estado=False).count()
-    return asientos_disponibles > 0
+    asientos_disponibles = Asiento.objects.filter(ruta_id=ruta_id, estado=1).count()
+    return asientos_disponibles
 
 def obtenerTrenes(request):
     trenes_activos = Tren.objects.filter(estado=True)
