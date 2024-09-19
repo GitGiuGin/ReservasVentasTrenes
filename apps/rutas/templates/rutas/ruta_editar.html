@@ -44,6 +44,19 @@
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
+                <label for="dias_disponibles" class="form-label">Horario salida</label>
+                <input type="time" class="form-control" id="horarioSalida" name="horarioSalida" required>
+                <div class="invalid-feedback">Por favor, seleccione los días en que la ruta está disponible.</div>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="dias_disponibles" class="form-label">Horario retorno</label>
+                <input type="time" class="form-control" id="horarioRetorno" name="horarioRetorno" required>
+                <div class="invalid-feedback">Por favor, seleccione los días en que la ruta está disponible.</div>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group col-md-6">
                 <label for="precio" class="form-label">Precio</label>
                 <input type="number" class="form-control" value="{{ ruta.precio }}" id="numPrecio" name="numPrecio"
                     placeholder="Ingrese el precio de la ruta" step="0.01" min="0" required>

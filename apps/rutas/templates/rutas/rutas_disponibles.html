@@ -25,10 +25,10 @@
     <tbody>
         {% for ruta in rutas %}
             <tr>
-                <td class="align-middle p-1">{{ ruta.origen }} - {{ ruta.destino }}</td>
-                <td class="text-center align-middle p-1">{{ ruta.duracion_formateada }}</td>
-                <td class="text-center align-middle p-1">{{ ruta.dia_salida }}</td>
-                <td class="text-center align-middle p-1">{{ ruta.dia_retorno }}</td>
+                <td class="align-middle p-1">{{ ruta.origen }} - {{ ruta.destino }}</td>          
+                <td class="text-center align-middle p-1"> {{ruta.duracion_formateada}} </td>
+                <td class="text-center align-middle p-1"> {{ruta.dia_salida}} - {{ruta.horario_salida}}</td>
+                <td class="text-center align-middle p-1"> {{ruta.dia_retorno}} - {{ruta.horario_retorno}}</td>
                 <td class="text-center align-middle p-1">{{ ruta.precio_bs }}</td>
                 <td class="align-middle p-1">{{ ruta.tren.nombre }}</td>
                 <td class="text-center align-middle p-1">

@@ -90,6 +90,8 @@ def editarRuta(request):
     dia_retorno = request.POST['selectDiaRetorno']
     precio = request.POST['numPrecio']
     tren = request.POST['selectTren']
+    horario_salida = request.POST['horarioSalida']
+    horario_retorno = request.POST['horarioRetorno']
 
     ruta = Ruta.objects.get(id=id)
     tren = Tren.objects.get(id=tren)
@@ -98,6 +100,8 @@ def editarRuta(request):
     ruta.dia_retorno = dia_retorno
     ruta.precio = precio
     ruta.tren = tren
+    ruta.horario_salida = horario_salida
+    ruta.horario_retorno = horario_retorno
     ruta.save()
     
     return redirect('ruta_lista')

@@ -8,13 +8,12 @@
         <thead class="table-dark">
             <tr>
                 <th class="text-center align-middle p-1">Ruta</th>
-                <th class="text-center align-middle p-1">Dia de Salida</th>
                 <th class="text-center align-middle p-1">Duracion</th>
+                <th class="text-center align-middle p-1">Dia de Salida</th>
                 <th class="text-center align-middle p-1">Dia de Retorno</th>
                 <th class="text-center align-middle p-1">Costo</th>
                 <!-- <th>Tipo de Tren</th> -->
                 <th class="text-center align-middle p-1">Tren</th>
-                <th class="text-center align-middle p-1">Asientos Disponibles</th>
                 <th class="text-center align-middle p-1">Acciones</th>
             </tr>
         </thead>
@@ -22,14 +21,11 @@
             {% for r in rutas %}
             <tr>
                 <td class="align-middle p-1"> {{r.origen}} - {{r.destino}}</td>
-                <td class="text-center align-middle p-1"> {{r.dia_salida}} </td>
                 <td class="text-center align-middle p-1"> {{r.duracion_formateada}} </td>
-                <td class="text-center align-middle p-1"> {{r.dia_retorno}} </td>
+                <td class="text-center align-middle p-1"> {{r.dia_salida}} - {{r.horario_salida}}</td>
+                <td class="text-center align-middle p-1"> {{r.dia_retorno}} - {{r.horario_retorno}}</td>
                 <td class="text-center align-middle p-1"> {{r.precio_bs}} </td>
                 <td class="align-middle p-1"> {{r.tren}} </td>
-                <td class="text-center align-middle p-1"> 
-                    {{ disponibilidad_asientos.ruta.id }} asientos disponibles
-                </td> <!-- asientos disponibles -->
                 <td class="text-center align-middle p-1"> 
                     <a href="edicionRuta/{{r.id}}" class="btn btn-sm btn-info m-1">
                         <i class="fas fa-edit"></i> Editar
