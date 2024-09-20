@@ -2,19 +2,43 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView
 from .models import Reserva
 from apps.asientos.models import Asiento
+from apps.trenes.models import Tren
+from datetime import datetime
 
-# Create your views here:
-def index(request):
-    return render(request, 'reservas/reserva_index.html')  # Renderiza una plantilla llamada 'index.html'
+def modificarFecha(fecha_reserva):
+    fecha_reserva = datetime.strptime(fecha_reserva, "%d/%m/%Y")
+    fecha_formateada = fecha_reserva.date()
+    return fecha_formateada
 
 #Creacion de cliente
 def reservaForm(request):
-    return render(request, 'reservas/reserva_form.html')
+    id_asientos_reservados = request.POST.getlist('asientos_reservados')
+    fecha_reserva = request.POST.get('txtFechaReserva')
+    #origen = request.POST.get('txtOrigen')
+    #destino = request.POST.get('txtDestino')
+    fecha_formateada = modificarFecha(fecha_reserva)
+    
+    #tren = request.POST.get('txtTren')
+    tren_id = request.POST.get('txtiDTren')
+    
+    tren_especifico = Tren.objects.get(id=int(tren_id))
+    
+    reserva = Reserva.objects.create(
+        fecha_reserva = fecha_formateada,
+        estado = True,
+        #cliente = None,
+        tren = tren_especifico
+    )   
+    
+    reserva_id = reserva.id
+    Asiento.objects.filter(id__in=id_asientos_reservados).update(estado=False, reserva_id=reserva_id)
+    
+    return render(request, 'reservas/reserva_list.html')
 
 def registrarReserva(request):
-    nombre = request.POST['txtNombre']
-    apellido_paterno = request.POST['txtApellidoPaterno']
-    apellido_materno = request.POST['txtApellidoMaterno']
+    nombre = request.POST['txtNombre'].title()
+    apellido_paterno = request.POST['txtApellidoPaterno'].title()
+    apellido_materno = request.POST['txtApellidoMaterno'].title()
     correo = request.POST['txtCorreo']
     telefono = request.POST['txtTelefono']
     direccion = request.POST['txtDireccion']
@@ -37,8 +61,8 @@ def reservaEditar(request):
 
 #Eliminar Cliente
 def eliminarReserva (request, id):
-    cliente = Reserva.objects.get(id=id)
-    cliente.delete()
+    reserva = Reserva.objects.get(id=id)
+    reserva.estado = None
     return redirect('ruta_lista')
 
 #Consultar cliente
@@ -61,10 +85,11 @@ def confirmarFormReserva(request):
         fechaReserva = request.POST.get('txtFechaReserva')
         id_asientos_seleccionados = request.POST.getlist('asientos_seleccionados') # ['1', '2', '3']
         ruta_id = request.POST.get('txtRutaId')
-        ruta_origen = request.POST.get('txtOrigen')
-        ruta_destino = request.POST.get('txtDestino')
+        ruta_origen = request.POST.get('txtOrigen').title()
+        ruta_destino = request.POST.get('txtDestino').title()
         ruta_precio = request.POST.get('txtPrecioAsiento')
         tren = request.POST.get('txtTren')
+        tren_id = request.POST.get('txtIdTren')
         
         # Filtra los asientos utilizando los IDs obtenidos
         asientos = Asiento.objects.filter(id__in=id_asientos_seleccionados, estado=True, ruta_id=ruta_id)
@@ -79,6 +104,7 @@ def confirmarFormReserva(request):
             'ruta_origen': ruta_origen,
             'ruta_destino': ruta_destino,
             'tren': tren,
+            'tren_id': tren_id,
             'ruta_precio': ruta_precio,
             'total_asientos': total_asientos,
             'total_reserva': total_reserva

@@ -7,6 +7,5 @@ urlpatterns = [
     path('registrarCliente/', registrarCliente, name='cliente_registrar'), #Parte logica del registro de cliente
     path('list/edicionCliente/<int:id>', clientesEdicion, name='clientes_edicion'),
     path('list/', ClienteListView.as_view(), name='clientes_lista'),
-    path('list/eliminarCliente/<int:id>', eliminarCliente), #Parte logica de eliminar cliente
     path('list/editarCliente', editarCliente, name="clientes_editar"),
 ]

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
+from django.contrib import messages
 from .models import Cliente
 
 # Create your views here:
@@ -11,13 +12,18 @@ def clientesForm(request):
     return render(request, 'clientes/cliente_form.html')
 
 def registrarCliente(request):
-    nombre = request.POST['txtNombre']
-    apellido_paterno = request.POST['txtApellidoPaterno']
-    apellido_materno = request.POST['txtApellidoMaterno']
-    correo = request.POST['txtCorreo']
-    telefono = request.POST['txtTelefono']
-    direccion = request.POST['txtDireccion']
-    contrasena = request.POST['txtContraseña']
+    nombre = request.POST.get('txtNombre').title()
+    apellido_paterno = request.POST.get('txtApellidoPaterno').title()
+    apellido_materno = request.POST.get('txtApellidoMaterno').title()
+    correo = request.POST.get('txtCorreo')
+    telefono = request.POST.get('txtTelefono')
+    direccion = request.POST.get('txtDireccion').title()
+    contrasena = request.POST.get('txtContraseña')
+    contrasena_repetida = request.POST.get('txtConfContraseña')
+
+    if contrasena != contrasena_repetida:
+            messages.error(request, "Las contraseñas no coinciden.")
+            return render(request, 'clientes/cliente_form.html')
 
     cliente = Cliente.objects.create(
         nombres=nombre, 
@@ -42,7 +48,7 @@ def editarCliente(request):
     id = request.POST['id']
     correo = request.POST['txtCorreo']
     telefono = request.POST['txtTelefono']
-    direccion = request.POST['txtDireccion']
+    direccion = request.POST['txtDireccion'].title()
     estado = request
 
     cliente = Cliente.objects.get(id=id)
@@ -51,12 +57,6 @@ def editarCliente(request):
     cliente.direccion = direccion
     cliente.save()
     
-    return redirect('clientes_lista')
-
-#Eliminar Cliente
-def eliminarCliente (request, id):
-    cliente = Cliente.objects.get(id=id)
-    cliente.delete()
     return redirect('clientes_lista')
 
 #Consultar cliente
@@ -70,6 +70,7 @@ class ClienteListView (ListView):
         search_cliente = self.request.GET.get('searchCliente', '')
 
         if search_cliente:
+            search_cliente = search_cliente.title()
             # Filtramos por nombre, apellido paterno y apellido materno
             queryset = queryset.filter(
                 nombres__icontains=search_cliente

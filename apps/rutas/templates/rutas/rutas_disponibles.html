@@ -27,8 +27,16 @@
             <tr>
                 <td class="align-middle p-1">{{ ruta.origen }} - {{ ruta.destino }}</td>          
                 <td class="text-center align-middle p-1"> {{ruta.duracion_formateada}} </td>
-                <td class="text-center align-middle p-1"> {{ruta.dia_salida}} - {{ruta.horario_salida}}</td>
+                {% if  ruta.dia_salida and ruta.horario_salida != "None"%}
+                    <td class="text-center align-middle p-1">{{ruta.dia_salida}} - {{ruta.horario_salida}}</td>
+                {% else %}
+                    <td class="text-center align-middle p-1">-</td>
+                {% endif %}
+                {% if  ruta.dia_retorno and ruta.horario_retorno != "None"%}
                 <td class="text-center align-middle p-1"> {{ruta.dia_retorno}} - {{ruta.horario_retorno}}</td>
+                {% else %}
+                    <td class="text-center align-middle p-1">-</td>
+                {% endif %}
                 <td class="text-center align-middle p-1">{{ ruta.precio_bs }}</td>
                 <td class="align-middle p-1">{{ ruta.tren.nombre }}</td>
                 <td class="text-center align-middle p-1">

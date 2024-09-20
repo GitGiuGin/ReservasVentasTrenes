@@ -1,5 +1,6 @@
 from django.db import models
 from apps.trenes.models import Tren
+from datetime import datetime
 
 # Create your models here.
 class Ruta (models.Model):
@@ -15,7 +16,6 @@ class Ruta (models.Model):
     horario_retorno = models.TimeField(verbose_name="Horario de Salida", null=True, blank=True)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     tren = models.ForeignKey(Tren, null=True, blank=True, on_delete=models.CASCADE)
-    dias_disponibles = models.CharField(max_length=50, verbose_name="Días Disponibles", null=True)  
 
     class Meta:
         verbose_name = ("Ruta")
@@ -32,3 +32,8 @@ class Ruta (models.Model):
     
     def precio_bs(self):
         return f"{self.precio} Bs"
+    
+    def formato_horario_retorno(self):
+        if self.horario_retorno:
+            return self.horario_retorno.strftime('%H:%M')  # Formato HH:MM
+        return None

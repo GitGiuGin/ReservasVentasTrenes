@@ -15,6 +15,7 @@
         </p>
 
         <div class="form-row">
+            {% if  ruta.dia_salida and ruta.horario_salida != "None"%}
             <div class="form-group col-md-6">
                 <label for="dias_disponibles" class="form-label">Días de salida</label>
                 <select class="form-control" id="selectDiasDisponibles" name="selectDiaSalida" required>
@@ -29,6 +30,15 @@
                 <div class="invalid-feedback">Por favor, seleccione los días en que la ruta está disponible.</div>
             </div>
             <div class="form-group col-md-6">
+                <label for="dias_disponibles" class="form-label">Horario salida</label>
+                <input type="time" class="form-control" id="horarioSalida" name="horarioSalida" value="{{ruta.horario_salida|time:"H:i"}}" required>
+                <div class="invalid-feedback">Por favor, seleccione los días en que la ruta está disponible.</div>
+            </div>
+            {% endif %}
+        </div>
+        <div class="form-row">
+            {% if  ruta.dia_retorno and ruta.horario_retorno != "None"%}
+            <div class="form-group col-md-6">
                 <label for="dias_disponibles" class="form-label">Días de retorno</label>
                 <select class="form-control" id="selectDiasDisponibles" name="selectDiaRetorno" required>
                     <option value="Lunes" {% if ruta.dia_retorno  == "Lunes" %}selected{% endif %}>Lunes</option>
@@ -41,18 +51,12 @@
                 </select>
                 <div class="invalid-feedback">Por favor, seleccione los días en que la ruta está disponible.</div>
             </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="dias_disponibles" class="form-label">Horario salida</label>
-                <input type="time" class="form-control" id="horarioSalida" name="horarioSalida" required>
-                <div class="invalid-feedback">Por favor, seleccione los días en que la ruta está disponible.</div>
-            </div>
             <div class="form-group col-md-6">
                 <label for="dias_disponibles" class="form-label">Horario retorno</label>
-                <input type="time" class="form-control" id="horarioRetorno" name="horarioRetorno" required>
+                <input type="time" class="form-control" id="horarioRetorno" name="horarioRetorno" value="{{ruta.horario_retorno|time:"H:i"}}" required>
                 <div class="invalid-feedback">Por favor, seleccione los días en que la ruta está disponible.</div>
             </div>
+            {% endif %}
         </div>
         
         <div class="form-row">

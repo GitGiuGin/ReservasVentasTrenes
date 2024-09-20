@@ -22,8 +22,16 @@
             <tr>
                 <td class="align-middle p-1"> {{r.origen}} - {{r.destino}}</td>
                 <td class="text-center align-middle p-1"> {{r.duracion_formateada}} </td>
-                <td class="text-center align-middle p-1"> {{r.dia_salida}} - {{r.horario_salida}}</td>
+                {% if  r.dia_salida and r.horario_salida != "None"%}
+                    <td class="text-center align-middle p-1">{{r.dia_salida}} - {{r.horario_salida}}</td>
+                {% else %}
+                    <td class="text-center align-middle p-1">-</td>
+                {% endif %}
+                {% if  r.dia_retorno and r.horario_retorno != "None"%}
                 <td class="text-center align-middle p-1"> {{r.dia_retorno}} - {{r.horario_retorno}}</td>
+                {% else %}
+                    <td class="text-center align-middle p-1">-</td>
+                {% endif %}
                 <td class="text-center align-middle p-1"> {{r.precio_bs}} </td>
                 <td class="align-middle p-1"> {{r.tren}} </td>
                 <td class="text-center align-middle p-1"> 
