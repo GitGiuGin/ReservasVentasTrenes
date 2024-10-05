@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from .views import *
 
 urlpatterns = [
@@ -8,4 +10,4 @@ urlpatterns = [
     path('list/eliminarReserva/<int:id>', eliminarReserva), #Parte logica de eliminar cliente
     path('registrarReserva/', registrarReserva, name='reserva_registrar'),
     path('confirmarReserva/', confirmarFormReserva, name='confirmar_reserva'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

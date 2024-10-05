@@ -138,3 +138,9 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Define dónde se almacenarán los archivos subidos
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # BASE_DIR es la raíz de tu proyecto
+
+# Define la URL base para acceder a esos archivos desde las vistas
+MEDIA_URL = '/media/'

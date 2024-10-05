@@ -40,6 +40,17 @@
                             <h4 class="p-2">Reserva de {{total_asientos}} asientos:<span style="float:right;">Total {{ total_reserva }} Bs </span></h4>
                             <input type="hidden" name="txtTotalAsientos" value="{{ total_asientos }}">
                             <input type="hidden" name="txtTotalReserva" value="{{ total_reserva }}">
+                            <br>
+                        </li>
+                        <li>
+                            <h4 class="p-2">Ingresar datos del comprobante de pago.</h4>
+                            <label for="txtNumeroComprobante" class="p-2">Numero de comprobante: </label>
+                            <input type="text" name="txtNumeroComprobante" required>
+                            <br>
+                            <div class="p-2">
+                                <label for="formDocumentoComprobante">Comprobante de pago: </label>
+                                <input class="form-control form-control-sm" type="file">
+                            </div>
                         </li>
                     </ul>
                 </td>
