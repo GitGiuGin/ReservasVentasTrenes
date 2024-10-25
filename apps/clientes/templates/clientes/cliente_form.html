@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="container mt-2">
-    <form action="{% url 'cliente_registrar' %}" method="POST" class="p-4 shadow-lg rounded"
+    <form action="{% url 'cliente_registrar_login' %}" method="POST" class="p-4 shadow-lg rounded"
         style="max-width: 600px; margin: auto; background-color: #f8f9fa;">
         {% csrf_token %}
 

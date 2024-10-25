@@ -1,9 +1,11 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from apps.trenes.models import Tren
 from apps.rutas.models import Ruta
 from apps.reservas.models import Reserva
 from apps.asientos.models import Asiento
 from datetime import datetime
+
 
 # Create your views here.
 def obtenerFechaActual(request):
@@ -30,7 +32,9 @@ def obtenerEstado(asiento_id):
     except Asiento.DoesNotExist:
         return False
 
+@login_required(login_url='login')
 def formSelectAsiento(request, id):
+    usuario = request.user
     fecha_actual = obtenerFechaActual(request)
     ruta = Ruta.objects.get(id=id)
     asientos = Asiento.objects.filter(ruta_id = ruta.id)
@@ -50,13 +54,17 @@ def formSelectAsiento(request, id):
         "ruta": ruta,
         "fecha_actual": fecha_actual,
         "asientos": asientos_con_estado,
-        'asientos_disponibles': asientos_disponibles
+        "asientos_disponibles": asientos_disponibles,
+        "usuario" : usuario
     }
     
     return render(request, 'asientos/seleccion_asiento.html', data)
 
 def verificarDisponibilidad(ruta_id):
     asientos_disponibles = Asiento.objects.filter(ruta_id=ruta_id, estado=1).count()
+    if asientos_disponibles == 0:
+        return "Sin asientos disponibles"
+    
     return asientos_disponibles
 
 def obtenerTrenes(request):

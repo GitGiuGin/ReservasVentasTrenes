@@ -7,6 +7,7 @@ from apps.trenes.models import Tren
 from apps.asientos.models import Asiento
 from datetime import datetime
 from django import forms
+from apps.asientos.views import verificarDisponibilidad
 
 # Create your views here.
 
@@ -54,8 +55,8 @@ def registrarRuta(request):
             origen=destino,
             destino=origen,
             duracion=duracion,
-            dia_retorno=dia_retorno,
-            horario_retorno=horario_retorno,
+            dia_salida=dia_retorno,
+            horario_salida=horario_retorno,
             precio=precio,
             tren=tren,
         )
@@ -175,10 +176,24 @@ def rutas_disponibles(request):
     query = request.GET.get('searchRuta', '')
     rutas = Ruta.objects.filter(tren__estado=True).select_related('tren')
 
+    # Si hay una búsqueda, filtramos las rutas
     if query:
         query = query.title()
         rutas = rutas.filter(
             models.Q(origen__icontains=query) | models.Q(destino__icontains=query)
         )
-    
-    return render(request, 'rutas/rutas_disponibles.html', {'rutas': rutas})
+
+    # Creamos una lista para almacenar la disponibilidad de asientos para cada ruta
+    rutas_con_disponibilidad = []
+    for ruta in rutas:
+        asientos_disponibles = verificarDisponibilidad(ruta_id=ruta.id)
+        rutas_con_disponibilidad.append({
+            'ruta': ruta,
+            'asientos_disponibles': asientos_disponibles
+        })
+
+    data = {
+        'rutas': rutas_con_disponibilidad
+    }
+
+    return render(request, 'rutas/rutas_disponibles.html', data)

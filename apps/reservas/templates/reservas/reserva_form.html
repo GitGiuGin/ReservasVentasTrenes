@@ -14,7 +14,15 @@
             <tr>
                 <td colspan="2">
                     <input type="hidden" name="txtRutaId" value="{{ruta_id}}">
-                    <label for="datosCliente"><strong>Cliente: </strong>DATOS DEL CLIENTE AQUI</label>
+                    <label for="datosCliente"><strong>Cliente: </strong>{{ nombres }} {{ apellido_paterno }} {{ apellido_materno }}</label>
+                    <input type="hidden" name="id_usuario" value="{{ id_usuario }}">
+                    <input type="hidden" name="txtNombres" value="{{ nombres }}">
+                    <input type="hidden" name="txtApellidoPaterno" value="{{ apellido_paterno }}">
+                    <input type="hidden" name="txtApellidoMaterno" value="{{ apellido_materno }}">
+                    <label for="datosCliente"><strong>Correo: </strong>{{ correo }} </label>
+                    <input type="hidden" name="txtCorreo" value="{{ correo }}">
+                    <label for="datosCliente"><strong>Telefono: </strong>{{ telefono }} </label>
+                    <input type="hidden" name="txtTelefono" value="{{ telefono }}">
                     <span style="float:right;"><strong>Viaje: </strong>{{ ruta_origen }} - {{ ruta_destino }} </span>
                     <input type="hidden" name="txtOrigen" value="{{ ruta_origen }}">
                     <input type="hidden" name="txtDestino" value="{{ ruta_destino }}">
@@ -46,8 +54,6 @@
             </tr>
         </tbody>
     </table>
-    
-   
     <div class="d-flex justify-content-end mt-3" style="width: auto;">
         <div class="form-group mr-2" style="min-width: 150px;">
             <button type="submit" id="reserveSeatsBtn" class="btn btn-dark w-100"

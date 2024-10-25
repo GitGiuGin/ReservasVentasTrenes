@@ -15,7 +15,15 @@
             <tr>
                 <td colspan="2">
                     <input type="hidden" name="txtRutaId" value="{{ruta.id}}">
-                    <label for="datosCliente"><strong>Cliente: </strong>DATOS DEL CLIENTE AQUI</label>
+                    <label for="datosCliente"><strong>Cliente: </strong>{{ usuario.nombres }} {{ usuario.apellido_paterno }} {{ usuario.apellido_materno }}</label>
+                    <input type="hidden" name="id_usuario" value="{{ usuario.id }}">
+                    <input type="hidden" name="txtNombres" value="{{ usuario.nombres }}">
+                    <input type="hidden" name="txtApellidoPaterno" value="{{ usuario.apellido_paterno }}">
+                    <input type="hidden" name="txtApellidoMaterno" value="{{ usuario.apellido_materno }}">
+                    <label for="datosCliente"><strong>Correo: </strong>{{ usuario.correo }} </label>
+                    <input type="hidden" name="txtCorreo" value="{{ usuario.correo }}">
+                    <label for="datosCliente"><strong>Telefono: </strong>{{ usuario.telefono }} </label>
+                    <input type="hidden" name="txtTelefono" value="{{ usuario.telefono }}">
                     <span style="float:right;"><strong>Viaje: </strong>{{ ruta.origen }} - {{ ruta.destino }} </span>
                     <input type="hidden" name="txtOrigen" value="{{ ruta.origen }}">
                     <input type="hidden" name="txtDestino" value="{{ ruta.destino }}">
@@ -504,7 +512,7 @@
                                     </button>
                                 </div>
                                 <div class="form-group" id="cancelSeatsBtn" style="min-width: 150px;">
-                                    <a href="javascript:history.back()" class="btn btn-dark w-100"
+                                    <a href={% url 'ruta_disponible' %} class="btn btn-dark w-100"
                                         style="background-color: #000000; border-color: #000000; min-width: 150px;"
                                         onmouseover="this.style.transform='scale(1.01)'; this.style.backgroundColor='#2c2c2c';"
                                         onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#000000';">

@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .profile-container {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f8f9fa;
+    }
+
+    .profile-card {
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        background-color: #ffffff;
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #000;
+    }
+
+    .btn-dark {
+        background-color: #000;
+        border: none;
+    }
+
+    .btn-dark:hover {
+        background-color: #333;
+    }
+
+    .btn:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .modal-dialog {
+        max-width: 90%; /* Ajustar según sea necesario */
+        width: auto; /* Ajustar automáticamente el ancho del contenido */
+    }
+</style>
+<div class="profile-container">
+    <div class="card profile-card">
+        <div class="row">
+            <div class="col-md-8">
+                <h3 class="card-title text-center mb-4">Mi Cuenta</h3>
+                <form>
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="firstName" value="{{usuario.nombres}}" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName1" class="form-label">Apellido Paterno</label>
+                        <input type="text" class="form-control" id="lastName1" value="{{usuario.apellido_paterno}}"
+                            disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName2" class="form-label">Apellido Materno</label>
+                        <input type="text" class="form-control" id="lastName2" value="{{usuario.apellido_materno}}"
+                            disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo Electrónico</label>
+                        <input type="email" class="form-control" id="email" value="{{usuario.correo}}" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Teléfono</label>
+                        <input type="tel" class="form-control" id="phone" value="{{usuario.telefono}}" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Dirección</label>
+                        <input type="text" class="form-control" id="address" value="{{usuario.direccion}}" disabled>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-4 sidebar">
+                <h5 class="text-center mb-3">Menú</h5>
+                <button type="button" class="btn btn-outline-dark w-100 mt-4" data-bs-toggle="modal"
+                    data-bs-target="#modalMisReservas">Mis Reservas</button>
+                <a href="{% url 'clientes_edicion' usuario.id 'mi_cuenta' %}"
+                    class="btn btn-outline-dark w-100 mt-2">Editar Perfil</a>
+                <button type="button" class="btn btn-outline-dark w-100 mt-2" data-bs-toggle="modal"
+                    data-bs-target="#modalCambiarContraseña">
+                    Cambiar contraseña</button>
+                <!-- <button type="button" class="btn btn-outline-dark w-100 mt-2">Opción 4</button> -->
+                <a href="{% url 'base' %}" class="btn btn-outline-dark w-100 mt-2">Atras</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Cambio de contraseña-->
+<div class="modal fade" id="modalCambiarContraseña" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Cambiar contraseña</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{% url 'mi_cuenta' %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtContraseña">Contraseña:</label>
+                            <input type="password" class="form-control" id="txtContraseña" name="txtContraseña"
+                                placeholder="Contraseña">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtConfContraseña">Confirmar Contraseña:</label>
+                            <input type="password" class="form-control" id="txtConfContraseña" name="txtConfContraseña"
+                                placeholder="Confirmar Contraseña">
+                        </div>
+                    </div>
+                </div>
+                {% if messages %}
+                <div>
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Mis Reservas -->
+<div class="modal fade" id="modalMisReservas" tabindex="-1" aria-labelledby="modalMisReservasLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalMisReservasLabel">Mis Reservas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mt-3">
+                    <form method="GET" action="{% url 'clientes_lista' %}" class="mb-4 w-100">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <div class="input-group">
+                                    <input type="text" name="searchCliente" class="form-control" placeholder="Buscar reserva" value="{{ request.GET.searchCliente }}">
+                                    <button class="btn btn-dark" type="submit">Buscar</button>
+                                </div>
+                            </div>
+                            <div class="col-md-auto mb-2">
+                                <a href="{% url 'clientes_nuevo' %}" type="submit" id="reserveSeatsBtn" class="btn btn-dark w-100"
+                                    style="background-color: #000000; border-color: #000000; width: 100px;"
+                                    onmouseover="this.style.transform='scale(1.01)'; this.style.backgroundColor='#2c2c2c';"
+                                    onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#000000';">
+                                    <i class="fas fa-save"></i> Nueva reserva
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Origen</th>
+                            <th scope="col">Destino</th>
+                            <th scope="col">Sale</th>
+                            <th scope="col">Horas</th>
+                            <th scope="col">Fecha reserva</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Tren</th>
+                            <th scope="col">Asientos reservados</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                            <td>Ejemplo</td>
+                            <td>Activo</td>
+                            <td>Tren 1</td>
+                            <td>2</td>
+                            <td>BOTONES AQUI</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        if (document.querySelector('.alert')) {
+            var modal = new bootstrap.Modal(document.getElementById('exampleModal'));
+            modal.show();
+        }
+    });
+</script>
+{% endblock %}

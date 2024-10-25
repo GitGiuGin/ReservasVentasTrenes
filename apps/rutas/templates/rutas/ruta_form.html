@@ -24,7 +24,7 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="duracion" class="form-label">Duración (en minutos)</label>
-                <input type="number" class="form-control" id="numDuracion" name="numDuracion"
+                <input type="time" class="form-control" id="numDuracion" name="numDuracion"
                     placeholder="Ingrese la duración de la ruta" min="1" required value="{{ request.POST.numDuracion|default:'' }}">
                 <div class="invalid-feedback">Por favor, ingrese una duración válida.</div>
             </div>

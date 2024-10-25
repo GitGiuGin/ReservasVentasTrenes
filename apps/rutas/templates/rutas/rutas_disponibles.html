@@ -16,31 +16,23 @@
             <th class="text-center align-middle p-1">Origen - Destino</th>
             <th class="text-center align-middle p-1">Duración</th>
             <th class="text-center align-middle p-1">Dia de Salida</th>
-            <th class="text-center align-middle p-1">Dia de Retorno</th>
             <th class="text-center align-middle p-1">Precio por <br>pasaje</th>
             <th class="text-center align-middle p-1">Nombre del Tren</th>
+            <th class="text-center align-middle p-1">Asientos disponibles</th>
             <th class="text-center align-middle p-1">Opciones</th>
         </tr>
     </thead>
     <tbody>
         {% for ruta in rutas %}
             <tr>
-                <td class="align-middle p-1">{{ ruta.origen }} - {{ ruta.destino }}</td>          
-                <td class="text-center align-middle p-1"> {{ruta.duracion_formateada}} </td>
-                {% if  ruta.dia_salida and ruta.horario_salida != "None"%}
-                    <td class="text-center align-middle p-1">{{ruta.dia_salida}} - {{ruta.horario_salida}}</td>
-                {% else %}
-                    <td class="text-center align-middle p-1">-</td>
-                {% endif %}
-                {% if  ruta.dia_retorno and ruta.horario_retorno != "None"%}
-                <td class="text-center align-middle p-1"> {{ruta.dia_retorno}} - {{ruta.horario_retorno}}</td>
-                {% else %}
-                    <td class="text-center align-middle p-1">-</td>
-                {% endif %}
-                <td class="text-center align-middle p-1">{{ ruta.precio_bs }}</td>
-                <td class="align-middle p-1">{{ ruta.tren.nombre }}</td>
+                <td class="align-middle p-1">{{ ruta.ruta.origen }} - {{ ruta.ruta.destino }}</td>          
+                <td class="text-center align-middle p-1"> {{ruta.ruta.duracion_formateada}} </td>
+                <td class="text-center align-middle p-1">{{ruta.ruta.dia_salida}} - {{ruta.ruta.horario_salida_formateado}}</td>
+                <td class="text-center align-middle p-1">{{ ruta.ruta.precio_bs }}</td>
+                <td class="align-middle p-1">{{ ruta.ruta.tren.nombre }}</td>
+                <td class="text-center align-middle p-1">{{ ruta.asientos_disponibles }}</td>
                 <td class="text-center align-middle p-1">
-                    <a href={% url 'seleccion_asiento' ruta.id %} class="btn btn-sm btn-info m-1">
+                    <a href={% url 'seleccion_asiento' ruta.ruta.id %} class="btn btn-sm btn-info m-1">
                         <i class="fas fa-edit"></i> Reservar asientos
                     </a>
                 </td>
