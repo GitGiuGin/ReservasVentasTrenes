@@ -1,11 +1,17 @@
 from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 from django.contrib import messages
+from django.db.models import Count
 from .models import Cliente
+from apps.reservas.models import Reserva
+from apps.asientos.models import Asiento
+from apps.trenes.models import Tren
+from apps.rutas.models import Ruta
 
 #Creacion de cliente
 def clientesForm(request):
@@ -148,10 +154,25 @@ def perfil_usuario(request):
         else:
             messages.error(request, "Por favor, completa todos los campos.")
         
-        return redirect("mi_cuenta")  # Redirige para evitar reenvío de formulario al recargar
+        return redirect("mi_cuenta")  
+    
+    # Consulta adaptada
+    reservas = Reserva.objects.filter(cliente__id=usuario.id).annotate(
+        asientos_disponibles=Count('reservas_asientos__estado')  # Contamos el número de asientos reservados
+    ).select_related('ruta', 'ruta__tren').values(
+        'ruta__origen',        # Ruta origen
+        'ruta__destino',       # Ruta destino
+        'ruta__fecha_salida',    # Día de salida
+        'ruta__hora_salida', # Hora de salida
+        'fecha_reserva',       # Fecha de reserva
+        'estado',              # Estado de la reserva
+        'id',                  # ID de la reserva
+        'ruta__tren__nombre',  # Nombre del tren
+    ).order_by('id')  # Ordenar por el ID de la reserva
     
     data = {
-        "usuario": usuario
+        "usuario": usuario,
+        "reservas": reservas
     }
     return render(request, "clientes/perfil.html", data)
 
@@ -161,3 +182,23 @@ def reservas_usuario (request):
         "usuario" : usuario
     }
     return render (request, "clientes/mis_reservas.html", data)
+
+@login_required
+def detalle_reserva(request, reserva_id):
+    reserva = get_object_or_404(Reserva, id=reserva_id)  # Obtener la reserva
+
+    # Acceder al tren desde la reserva
+    tren = reserva.ruta.tren  # Asegúrate de que la reserva tiene un campo `ruta`
+
+    # Ahora puedes acceder a las rutas relacionadas con este tren
+    rutas = tren.rutas.all()  # Esto obtiene todas las rutas asociadas a este tren
+
+    # Continúa con la lógica de tu vista
+    context = {
+        'reserva': reserva,
+        'tren': tren,
+        'rutas': rutas,
+        # Otros contextos que necesites
+    }
+
+    return render(request, 'tu_template.html', context)

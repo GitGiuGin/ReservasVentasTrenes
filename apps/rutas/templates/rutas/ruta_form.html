@@ -32,29 +32,11 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="dias_disponibles" class="form-label">Días de salida</label>
-                <select class="form-control" id="selectDiasDisponibles" name="selectDiaSalida" required value="{{ request.POST.selectDiaSalida|default:'' }}">
-                    <option value="Lunes" {% if request.POST.selectDiaSalida == "Lunes" %}selected{% endif %}>Lunes</option>
-                    <option value="Martes" {% if request.POST.selectDiaSalida == "Martes" %}selected{% endif %}>Martes</option>
-                    <option value="Miércoles" {% if request.POST.selectDiaSalida == "Miércoles" %}selected{% endif %}>Miércoles</option>
-                    <option value="Jueves" {% if request.POST.selectDiaSalida == "Jueves" %}selected{% endif %}>Jueves</option>
-                    <option value="Viernes" {% if request.POST.selectDiaSalida == "Viernes" %}selected{% endif %}>Viernes</option>
-                    <option value="Sábado" {% if request.POST.selectDiaSalida == "Sábado" %}selected{% endif %}>Sábado</option>
-                    <!-- Añade más días si es necesario -->
-                </select>
-                <div class="invalid-feedback">Por favor, seleccione los días en que la ruta está disponible.</div>
+                <input type="date" class="form-control" name="fecha_salida">
             </div>
             <div class="form-group col-md-6">
                 <label for="dias_disponibles" class="form-label">Días de retorno</label>
-                <select class="form-control" id="selectDiasDisponibles" name="selectDiaRetorno" required>
-                    <option value="Lunes" {% if request.POST.selectDiaRetorno == "Lunes" %}selected{% endif %}>Lunes</option>
-                    <option value="Martes" {% if request.POST.selectDiaRetorno == "Martes" %}selected{% endif %}>Martes</option>
-                    <option value="Miércoles" {% if request.POST.selectDiaRetorno == "Miércoles" %}selected{% endif %}>Miércoles</option>
-                    <option value="Jueves" {% if request.POST.selectDiaRetorno == "Jueves" %}selected{% endif %}>Jueves</option>
-                    <option value="Viernes" {% if request.POST.selectDiaRetorno == "Viernes" %}selected{% endif %}>Viernes</option>
-                    <option value="Sábado" {% if request.POST.selectDiaRetorno == "Sábado" %}selected{% endif %}>Sábado</option>
-                    <!-- Añade más días si es necesario -->
-                </select>
-                <div class="invalid-feedback">Por favor, seleccione los días en que la ruta está disponible.</div>
+                <input type="date" class="form-control" name="fecha_retorno">
             </div>
         </div>
         <div class="form-row">
@@ -93,7 +75,7 @@
                 {% endfor %}
             {% endif %}
         <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-dark">Registrar Ruta</button>
+            <button type="submit" class="btn btn-dark"><i class="fa fa-check" aria-hidden="true"></i> Registrar Ruta</button>
             <a href="javascript:history.back()" type="reset" class="btn btn-dark">Cancelar</a>
         </div>
     </form>

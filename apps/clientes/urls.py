@@ -12,4 +12,5 @@ urlpatterns = [
     path('login/', custom_login_view, name='login'),
     path('account/', perfil_usuario, name='mi_cuenta'),
     path('reservas/', reservas_usuario, name='mis_reservas'),
+    path('detalle_reserva/<int:reserva_id>/', detalle_reserva, name='detalle_reserva'),
 ]

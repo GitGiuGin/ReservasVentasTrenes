@@ -23,6 +23,7 @@
                     <input type="hidden" name="txtCorreo" value="{{ correo }}">
                     <label for="datosCliente"><strong>Telefono: </strong>{{ telefono }} </label>
                     <input type="hidden" name="txtTelefono" value="{{ telefono }}">
+                    <input type="hidden" name="txtIdRuta" value="{{ ruta_id }}">
                     <span style="float:right;"><strong>Viaje: </strong>{{ ruta_origen }} - {{ ruta_destino }} </span>
                     <input type="hidden" name="txtOrigen" value="{{ ruta_origen }}">
                     <input type="hidden" name="txtDestino" value="{{ ruta_destino }}">
@@ -40,7 +41,7 @@
                     <ul class="list-inline mt-2">
                         <li class="list-inline-item p-2"><h5>Asientos Seleccionados:</h5></li>
                             {% for asiento in asientos_seleccionados %}
-                                <li class="list-inline-item badge bg-success p-2">{{ asiento.numero_asiento }}</li>
+                                <li class="list-inline-item badge bg-success p-2">{{ asiento }}</li>
                                 <input type="hidden" name="asientos_reservados" value="{{ asiento.id }}">
                             {% endfor %}
                         </li>
@@ -60,7 +61,7 @@
                 style="background-color: #000000; border-color: #000000; min-width: 150px;"
                 onmouseover="this.style.transform='scale(1.01)'; this.style.backgroundColor='#2c2c2c';"
                 onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#000000';">
-                <i class="fas fa-save"></i> Confirmar reserva
+                <i class="fa fa-ticket" aria-hidden="true"></i> Confirmar reserva
             </button>
         </div>
         <div class="form-group" id="cancelSeatsBtn" style="min-width: 150px;">
@@ -68,7 +69,7 @@
                 style="background-color: #000000; border-color: #000000; min-width: 150px;"
                 onmouseover="this.style.transform='scale(1.01)'; this.style.backgroundColor='#2c2c2c';"
                 onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#000000';">
-                <i class="fas fa-save"></i> Cancelar
+                Cancelar
             </a>
         </div>
     </div>

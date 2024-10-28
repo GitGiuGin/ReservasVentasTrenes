@@ -1,6 +1,8 @@
 from django.db.models.signals import post_migrate
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .models import Cliente
+from apps.asientos.models import Asiento
 
 @receiver(post_migrate)
 def create_superuser(sender, **kwargs):
@@ -13,3 +15,11 @@ def create_superuser(sender, **kwargs):
                 apellido_materno='Espejo',
                 password='adminutb'  # Cambia la contraseña según tus necesidades
             )
+            
+@receiver(post_save, sender=Asiento)
+def eliminar_relacion_reserva(sender, instance, **kwargs):
+    # Verifica si el estado cambió a True
+    if instance.estado:
+        # Elimina la relación del asiento con la reserva (si existe)
+        instance.reserva = None
+        instance.save()

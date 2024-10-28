@@ -4,7 +4,8 @@
 <div class="mt-3">
     <form method="GET" action="{% url 'ruta_disponible' %}" class="mb-4">
         <div class="input-group">
-            <input type="text" name="searchRuta" class="form-control" placeholder="Buscar ruta" value="{{ request.GET.searchRuta }}">
+            <input type="text" name="searchRuta" class="form-control" placeholder="Buscar ruta"
+                value="{{ request.GET.searchRuta }}">
             <button class="btn btn-dark" type="submit">Buscar</button>
         </div>
     </form>
@@ -23,20 +24,28 @@
         </tr>
     </thead>
     <tbody>
-        {% for ruta in rutas %}
-            <tr>
-                <td class="align-middle p-1">{{ ruta.ruta.origen }} - {{ ruta.ruta.destino }}</td>          
-                <td class="text-center align-middle p-1"> {{ruta.ruta.duracion_formateada}} </td>
-                <td class="text-center align-middle p-1">{{ruta.ruta.dia_salida}} - {{ruta.ruta.horario_salida_formateado}}</td>
-                <td class="text-center align-middle p-1">{{ ruta.ruta.precio_bs }}</td>
-                <td class="align-middle p-1">{{ ruta.ruta.tren.nombre }}</td>
-                <td class="text-center align-middle p-1">{{ ruta.asientos_disponibles }}</td>
-                <td class="text-center align-middle p-1">
-                    <a href={% url 'seleccion_asiento' ruta.ruta.id %} class="btn btn-sm btn-info m-1">
-                        <i class="fas fa-edit"></i> Reservar asientos
-                    </a>
-                </td>
-            </tr>
+        {% for item in rutas_disponibles %}
+        <tr>
+            <td class="align-middle p-1">ID RUTA {{ item.ruta.id }} {{ item.ruta.origen }} - {{ item.ruta.destino }}</td>
+            <td class="text-center align-middle p-1">{{ item.ruta.duracion_formateada }}</td>
+            <td class="text-center align-middle p-1">{{ item.ruta.fecha_salida_formateada }} - {{ item.ruta.horario_salida_formateado}}</td>
+            <td class="text-center align-middle p-1">{{ item.ruta.precio_bs }}</td>
+            <td class="align-middle p-1">{{ item.ruta.tren.nombre }}</td>
+            <td class="text-center align-middle p-1">
+                {% if item.asientos_disponibles == "Sin asientos disponibles" %}
+                    {{ item.asientos_disponibles }}
+                {% else %}
+                    {{ item.asientos_disponibles.count }}
+                {% endif %}
+            </td>
+            <td class="text-center align-middle p-1">
+                <a  href="{% url 'seleccion_asiento' item.ruta.id %}" 
+                    class="btn btn-sm btn-info m-1 
+                    {% if item.asientos_disponibles == 'Sin asientos disponibles' or item.asientos_disponibles.count == 0 %} disabled {% endif %}">
+                    <i class="fas fa-edit"></i> Reservar asientos
+                </a>
+            </td>
+        </tr>
         {% endfor %}
     </tbody>
 </table>
