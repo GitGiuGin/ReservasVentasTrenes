@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('origen', models.CharField(choices=[('estacion1', 'Estación 1'), ('estacion2', 'Estación 2')], max_length=50, verbose_name='Estación de origen')),
                 ('destino', models.CharField(choices=[('estacionA', 'Estación A'), ('estacionB', 'Estación B')], max_length=50, verbose_name='Estación de destino')),
-                ('duracion', models.SmallIntegerField()),
+                ('duracion', models.TimeField(blank=True, null=True, verbose_name='Duracion de viaje')),
                 ('dia_salida', models.CharField(blank=True, max_length=50, null=True, verbose_name='Dia Salida')),
                 ('horario_salida', models.TimeField(blank=True, null=True, verbose_name='Horario de Salida')),
                 ('dia_retorno', models.CharField(blank=True, max_length=50, null=True, verbose_name='Dia Retorno')),

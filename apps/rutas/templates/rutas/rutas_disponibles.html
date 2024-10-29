@@ -4,7 +4,8 @@
 <div class="mt-3">
     <form method="GET" action="{% url 'ruta_disponible' %}" class="mb-4">
         <div class="input-group">
-            <input type="text" name="searchRuta" class="form-control" placeholder="Buscar ruta" value="{{ request.GET.searchRuta }}">
+            <input type="text" name="searchRuta" class="form-control" placeholder="Buscar ruta"
+                value="{{ request.GET.searchRuta }}">
             <button class="btn btn-dark" type="submit">Buscar</button>
         </div>
     </form>
@@ -16,35 +17,35 @@
             <th class="text-center align-middle p-1">Origen - Destino</th>
             <th class="text-center align-middle p-1">Duración</th>
             <th class="text-center align-middle p-1">Dia de Salida</th>
-            <th class="text-center align-middle p-1">Dia de Retorno</th>
             <th class="text-center align-middle p-1">Precio por <br>pasaje</th>
             <th class="text-center align-middle p-1">Nombre del Tren</th>
+            <th class="text-center align-middle p-1">Asientos disponibles</th>
             <th class="text-center align-middle p-1">Opciones</th>
         </tr>
     </thead>
     <tbody>
-        {% for ruta in rutas %}
-            <tr>
-                <td class="align-middle p-1">{{ ruta.origen }} - {{ ruta.destino }}</td>          
-                <td class="text-center align-middle p-1"> {{ruta.duracion_formateada}} </td>
-                {% if  ruta.dia_salida and ruta.horario_salida != "None"%}
-                    <td class="text-center align-middle p-1">{{ruta.dia_salida}} - {{ruta.horario_salida}}</td>
+        {% for item in rutas_disponibles %}
+        <tr>
+            <td class="align-middle p-1">ID RUTA {{ item.ruta.id }} {{ item.ruta.origen }} - {{ item.ruta.destino }}</td>
+            <td class="text-center align-middle p-1">{{ item.ruta.duracion_formateada }}</td>
+            <td class="text-center align-middle p-1">{{ item.ruta.fecha_salida_formateada }} - {{ item.ruta.horario_salida_formateado}}</td>
+            <td class="text-center align-middle p-1">{{ item.ruta.precio_bs }}</td>
+            <td class="align-middle p-1">{{ item.ruta.tren.nombre }}</td>
+            <td class="text-center align-middle p-1">
+                {% if item.asientos_disponibles == "Sin asientos disponibles" %}
+                    {{ item.asientos_disponibles }}
                 {% else %}
-                    <td class="text-center align-middle p-1">-</td>
+                    {{ item.asientos_disponibles.count }}
                 {% endif %}
-                {% if  ruta.dia_retorno and ruta.horario_retorno != "None"%}
-                <td class="text-center align-middle p-1"> {{ruta.dia_retorno}} - {{ruta.horario_retorno}}</td>
-                {% else %}
-                    <td class="text-center align-middle p-1">-</td>
-                {% endif %}
-                <td class="text-center align-middle p-1">{{ ruta.precio_bs }}</td>
-                <td class="align-middle p-1">{{ ruta.tren.nombre }}</td>
-                <td class="text-center align-middle p-1">
-                    <a href={% url 'seleccion_asiento' ruta.id %} class="btn btn-sm btn-info m-1">
-                        <i class="fas fa-edit"></i> Reservar asientos
-                    </a>
-                </td>
-            </tr>
+            </td>
+            <td class="text-center align-middle p-1">
+                <a  href="{% url 'seleccion_asiento' item.ruta.id %}" 
+                    class="btn btn-sm btn-info m-1 
+                    {% if item.asientos_disponibles == 'Sin asientos disponibles' or item.asientos_disponibles.count == 0 %} disabled {% endif %}">
+                    <i class="fas fa-edit"></i> Reservar asientos
+                </a>
+            </td>
+        </tr>
         {% endfor %}
     </tbody>
 </table>

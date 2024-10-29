@@ -15,17 +15,26 @@
             <tr>
                 <td colspan="2">
                     <input type="hidden" name="txtRutaId" value="{{ruta.id}}">
-                    <label for="datosCliente"><strong>Cliente: </strong>DATOS DEL CLIENTE AQUI</label>
+                    <label for="datosCliente"><strong>Cliente: </strong>{{ usuario.nombres }} {{ usuario.apellido_paterno }} {{ usuario.apellido_materno }}</label>
+                    <input type="hidden" name="id_usuario" value="{{ usuario.id }}">
+                    <input type="hidden" name="txtNombres" value="{{ usuario.nombres }}">
+                    <input type="hidden" name="txtApellidoPaterno" value="{{ usuario.apellido_paterno }}">
+                    <input type="hidden" name="txtApellidoMaterno" value="{{ usuario.apellido_materno }}">
+                    <label for="datosCliente"><strong>Correo: </strong>{{ usuario.correo }} </label>
+                    <input type="hidden" name="txtCorreo" value="{{ usuario.correo }}">
+                    <label for="datosCliente"><strong>Telefono: </strong>{{ usuario.telefono }} </label>
+                    <input type="hidden" name="txtTelefono" value="{{ usuario.telefono }}">
                     <span style="float:right;"><strong>Viaje: </strong>{{ ruta.origen }} - {{ ruta.destino }} </span>
                     <input type="hidden" name="txtOrigen" value="{{ ruta.origen }}">
                     <input type="hidden" name="txtDestino" value="{{ ruta.destino }}">
                     <br>
-                    <span style="float:right;"><strong>Tren: </strong>{{ ruta.tren.nombre }}</span>
-                    <input type="hidden" name="txtTren" value="{{ ruta.tren.nombre }}">
-                    <input type="hidden" name="txtIdTren" value="{{ ruta.tren.id }}">
+                    <span style="float:right;"><strong>Tren: </strong>{{ tren.nombre }}</span>
+                    <input type="hidden" name="txtTren" value="{{ tren.nombre }}">
+                    <input type="hidden" name="txtIdTren" value="{{ tren.id }}">
                     <br>
                     <span class="mt-1" style="float:right;"><strong>Precio por asiento: </strong>{{ ruta.precio }} Bs</span>
                     <input type="hidden" name="txtPrecioAsiento" value="{{ ruta.precio }}">
+                    <label>RUTA ID : {{ ruta.id }}</label>
                 </td>
             </tr>
             <tr>
@@ -43,16 +52,16 @@
                             {% for asientos in asientos %}
                                 {% if asientos.numero_asiento == "1A" %}
                                 <div class="form-check form-check-inline">
-                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado }} >
+                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado_check  }} >
                                     <label
                                         id="label-{{ asientos.id }}"
-                                        class="btn  {% if asientos.estado == "checked" %} 
+                                        class="btn  {% if asientos.estado_check == "checked" %} 
                                                         btn-danger active 
                                                     {% else %}
                                                         btn-success active
                                                     {% endif %}" 
                                                     for="btn-check-{{asientos.id}}" 
-                                                    {% if asientos.estado == 'checked' %}
+                                                    {% if asientos.estado_check == 'checked' %}
                                                         data-bs-toggle="button"
                                                         aria-pressed="true"
                                                     {% else %}
@@ -65,16 +74,16 @@
                                 {% endif %}
                                 {% if asientos.numero_asiento == "1B" %}
                                 <div class="form-check form-check-inline">
-                                    <input name="asientos_seleccionados" value="{{asientos.id}}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado }} >
+                                    <input name="asientos_seleccionados" value="{{asientos.id}}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado_check }} >
                                     <label
                                         id="label-{{ asientos.id }}"
-                                        class="btn  {% if asientos.estado == "checked" %} 
+                                        class="btn  {% if asientos.estado_check == "checked" %} 
                                                         btn-danger active 
                                                     {% else %}
                                                         btn-success active
                                                     {% endif %}" 
                                                     for="btn-check-{{asientos.id}}" 
-                                                    {% if asientos.estado == 'checked' %}
+                                                    {% if asientos.estado_check == 'checked' %}
                                                         data-bs-toggle="button"
                                                         aria-pressed="true"
                                                     {% else %}
@@ -87,16 +96,16 @@
                                 {% endif %}
                                 {% if asientos.numero_asiento == "1C" %}
                                 <div class="form-check form-check-inline ml-5">
-                                    <input name="asientos_seleccionados" value="{{asientos.id}}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado }} >
+                                    <input name="asientos_seleccionados" value="{{asientos.id}}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado_check }} >
                                     <label
                                         id="label-{{ asientos.id }}"
-                                        class="btn  {% if asientos.estado == "checked" %} 
+                                        class="btn  {% if asientos.estado_check == "checked" %} 
                                                         btn-danger active 
                                                     {% else %}
                                                         btn-success active
                                                     {% endif %}" 
                                                     for="btn-check-{{asientos.id}}" 
-                                                    {% if asientos.estado == 'checked' %}
+                                                    {% if asientos.estado_check == 'checked' %}
                                                         data-bs-toggle="button"
                                                         aria-pressed="true"
                                                     {% else %}
@@ -109,16 +118,16 @@
                                 {% endif %}
                                 {% if asientos.numero_asiento == "1D" %}
                                 <div class="form-check form-check-inline">
-                                    <input name="asientos_seleccionados" value="{{asientos.id}}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado }} >
+                                    <input name="asientos_seleccionados" value="{{asientos.id}}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado_check }} >
                                     <label
                                         id="label-{{ asientos.id }}"
-                                        class="btn  {% if asientos.estado == "checked" %} 
+                                        class="btn  {% if asientos.estado_check == "checked" %} 
                                                         btn-danger active 
                                                     {% else %}
                                                         btn-success active
                                                     {% endif %}" 
                                                     for="btn-check-{{asientos.id}}" 
-                                                    {% if asientos.estado == 'checked' %}
+                                                    {% if asientos.estado_check == 'checked' %}
                                                         data-bs-toggle="button"
                                                         aria-pressed="true"
                                                     {% else %}
@@ -134,16 +143,16 @@
                             {% for asientos in asientos %}
                                 {% if asientos.numero_asiento == "2A" %}
                                 <div class="form-check form-check-inline">
-                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado }} >
+                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado_check }} >
                                     <label
                                         id="label-{{ asientos.id }}"
-                                        class="btn  {% if asientos.estado == "checked" %} 
+                                        class="btn  {% if asientos.estado_check == "checked" %} 
                                                         btn-danger active 
                                                     {% else %}
                                                         btn-success active
                                                     {% endif %}" 
                                                     for="btn-check-{{asientos.id}}" 
-                                                    {% if asientos.estado == 'checked' %}
+                                                    {% if asientos.estado_check == 'checked' %}
                                                         data-bs-toggle="button"
                                                         aria-pressed="true"
                                                     {% else %}
@@ -156,16 +165,16 @@
                                 {% endif %}
                                 {% if asientos.numero_asiento == "2B" %}
                                 <div class="form-check form-check-inline">
-                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado }} >
+                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado_check }} >
                                     <label
                                         id="label-{{ asientos.id }}"
-                                        class="btn  {% if asientos.estado == "checked" %} 
+                                        class="btn  {% if asientos.estado_check == "checked" %} 
                                                         btn-danger active 
                                                     {% else %}
                                                         btn-success active
                                                     {% endif %}" 
                                                     for="btn-check-{{asientos.id}}" 
-                                                    {% if asientos.estado == 'checked' %}
+                                                    {% if asientos.estado_check == 'checked' %}
                                                         data-bs-toggle="button"
                                                         aria-pressed="true"
                                                     {% else %}
@@ -178,16 +187,16 @@
                                 {% endif %}
                                 {% if asientos.numero_asiento == "2C" %}
                                 <div class="form-check form-check-inline ml-5">
-                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado }} >
+                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado_check }} >
                                     <label
                                         id="label-{{ asientos.id }}"
-                                        class="btn  {% if asientos.estado == "checked" %} 
+                                        class="btn  {% if asientos.estado_check == "checked" %} 
                                                         btn-danger active 
                                                     {% else %}
                                                         btn-success active
                                                     {% endif %}" 
                                                     for="btn-check-{{asientos.id}}" 
-                                                    {% if asientos.estado == 'checked' %}
+                                                    {% if asientos.estado_check == 'checked' %}
                                                         data-bs-toggle="button"
                                                         aria-pressed="true"
                                                     {% else %}
@@ -200,16 +209,16 @@
                                 {% endif %}
                                 {% if asientos.numero_asiento == "2D" %}
                                 <div class="form-check form-check-inline">
-                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado }} >
+                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado_check }} >
                                     <label
                                         id="label-{{ asientos.id }}"
-                                        class="btn  {% if asientos.estado == "checked" %} 
+                                        class="btn  {% if asientos.estado_check == "checked" %} 
                                                         btn-danger active 
                                                     {% else %}
                                                         btn-success active
                                                     {% endif %}" 
                                                     for="btn-check-{{asientos.id}}" 
-                                                    {% if asientos.estado == 'checked' %}
+                                                    {% if asientos.estado_check == 'checked' %}
                                                         data-bs-toggle="button"
                                                         aria-pressed="true"
                                                     {% else %}
@@ -225,16 +234,16 @@
                             {% for asientos in asientos %}
                                 {% if asientos.numero_asiento == "3A" %}
                                 <div class="form-check form-check-inline">
-                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado }} >
+                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado_check }} >
                                     <label
                                         id="label-{{ asientos.id }}"
-                                        class="btn  {% if asientos.estado == "checked" %} 
+                                        class="btn  {% if asientos.estado_check == "checked" %} 
                                                         btn-danger active 
                                                     {% else %}
                                                         btn-success active
                                                     {% endif %}" 
                                                     for="btn-check-{{asientos.id}}" 
-                                                    {% if asientos.estado == 'checked' %}
+                                                    {% if asientos.estado_check == 'checked' %}
                                                         data-bs-toggle="button"
                                                         aria-pressed="true"
                                                     {% else %}
@@ -247,16 +256,16 @@
                                 {% endif %}
                                 {% if asientos.numero_asiento == "3B" %}
                                 <div class="form-check form-check-inline">
-                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado }} >
+                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado_check }} >
                                     <label
                                         id="label-{{ asientos.id }}"
-                                        class="btn  {% if asientos.estado == "checked" %} 
+                                        class="btn  {% if asientos.estado_check == "checked" %} 
                                                         btn-danger active 
                                                     {% else %}
                                                         btn-success active
                                                     {% endif %}" 
                                                     for="btn-check-{{asientos.id}}" 
-                                                    {% if asientos.estado == 'checked' %}
+                                                    {% if asientos.estado_check == 'checked' %}
                                                         data-bs-toggle="button"
                                                         aria-pressed="true"
                                                     {% else %}
@@ -269,16 +278,16 @@
                                 {% endif %}
                                 {% if asientos.numero_asiento == "3C" %}
                                 <div class="form-check form-check-inline ml-5">
-                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado }} >
+                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado_check }} >
                                     <label
                                         id="label-{{ asientos.id }}"
-                                        class="btn  {% if asientos.estado == "checked" %} 
+                                        class="btn  {% if asientos.estado_check == "checked" %} 
                                                         btn-danger active 
                                                     {% else %}
                                                         btn-success active
                                                     {% endif %}" 
                                                     for="btn-check-{{asientos.id}}" 
-                                                    {% if asientos.estado == 'checked' %}
+                                                    {% if asientos.estado_check == 'checked' %}
                                                         data-bs-toggle="button"
                                                         aria-pressed="true"
                                                     {% else %}
@@ -291,16 +300,16 @@
                                 {% endif %}
                                 {% if asientos.numero_asiento == "3D" %}
                                 <div class="form-check form-check-inline">
-                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado }} >
+                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado_check }} >
                                     <label
                                         id="label-{{ asientos.id }}"
-                                        class="btn  {% if asientos.estado == "checked" %} 
+                                        class="btn  {% if asientos.estado_check == "checked" %} 
                                                         btn-danger active 
                                                     {% else %}
                                                         btn-success active
                                                     {% endif %}" 
                                                     for="btn-check-{{asientos.id}}" 
-                                                    {% if asientos.estado == 'checked' %}
+                                                    {% if asientos.estado_check == 'checked' %}
                                                         data-bs-toggle="button"
                                                         aria-pressed="true"
                                                     {% else %}
@@ -316,16 +325,16 @@
                             {% for asientos in asientos %}
                                 {% if asientos.numero_asiento == "4A" %}
                                 <div class="form-check form-check-inline">
-                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado }} >
+                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado_check }} >
                                     <label
                                         id="label-{{ asientos.id }}"
-                                        class="btn  {% if asientos.estado == "checked" %} 
+                                        class="btn  {% if asientos.estado_check == "checked" %} 
                                                         btn-danger active 
                                                     {% else %}
                                                         btn-success active
                                                     {% endif %}" 
                                                     for="btn-check-{{asientos.id}}" 
-                                                    {% if asientos.estado == 'checked' %}
+                                                    {% if asientos.estado_check == 'checked' %}
                                                         data-bs-toggle="button"
                                                         aria-pressed="true"
                                                     {% else %}
@@ -338,16 +347,16 @@
                                 {% endif %}
                                 {% if asientos.numero_asiento == "4B" %}
                                 <div class="form-check form-check-inline">
-                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado }} >
+                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado_check }} >
                                     <label
                                         id="label-{{ asientos.id }}"
-                                        class="btn  {% if asientos.estado == "checked" %} 
+                                        class="btn  {% if asientos.estado_check == "checked" %} 
                                                         btn-danger active 
                                                     {% else %}
                                                         btn-success active
                                                     {% endif %}" 
                                                     for="btn-check-{{asientos.id}}" 
-                                                    {% if asientos.estado == 'checked' %}
+                                                    {% if asientos.estado_check == 'checked' %}
                                                         data-bs-toggle="button"
                                                         aria-pressed="true"
                                                     {% else %}
@@ -360,16 +369,16 @@
                                 {% endif %}
                                 {% if asientos.numero_asiento == "4C" %}
                                 <div class="form-check form-check-inline ml-5">
-                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado }} >
+                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado_check }} >
                                     <label
                                         id="label-{{ asientos.id }}"
-                                        class="btn  {% if asientos.estado == "checked" %} 
+                                        class="btn  {% if asientos.estado_check == "checked" %} 
                                                         btn-danger active 
                                                     {% else %}
                                                         btn-success active
                                                     {% endif %}" 
                                                     for="btn-check-{{asientos.id}}" 
-                                                    {% if asientos.estado == 'checked' %}
+                                                    {% if asientos.estado_check == 'checked' %}
                                                         data-bs-toggle="button"
                                                         aria-pressed="true"
                                                     {% else %}
@@ -382,16 +391,16 @@
                                 {% endif %}
                                 {% if asientos.numero_asiento == "4D" %}
                                 <div class="form-check form-check-inline">
-                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado }} >
+                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado_check }} >
                                     <label
                                         id="label-{{ asientos.id }}"
-                                        class="btn  {% if asientos.estado == "checked" %} 
+                                        class="btn  {% if asientos.estado_check == "checked" %} 
                                                         btn-danger active 
                                                     {% else %}
                                                         btn-success active
                                                     {% endif %}" 
                                                     for="btn-check-{{asientos.id}}" 
-                                                    {% if asientos.estado == 'checked' %}
+                                                    {% if asientos.estado_check == 'checked' %}
                                                         data-bs-toggle="button"
                                                         aria-pressed="true"
                                                     {% else %}
@@ -407,16 +416,16 @@
                             {% for asientos in asientos %}
                                 {% if asientos.numero_asiento == "5A" %}
                                 <div class="form-check form-check-inline">
-                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado }} >
+                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado_check }} >
                                     <label
                                         id="label-{{ asientos.id }}"
-                                        class="btn  {% if asientos.estado == "checked" %} 
+                                        class="btn  {% if asientos.estado_check == "checked" %} 
                                                         btn-danger active 
                                                     {% else %}
                                                         btn-success active
                                                     {% endif %}" 
                                                     for="btn-check-{{asientos.id}}" 
-                                                    {% if asientos.estado == 'checked' %}
+                                                    {% if asientos.estado_check == 'checked' %}
                                                         data-bs-toggle="button"
                                                         aria-pressed="true"
                                                     {% else %}
@@ -429,16 +438,16 @@
                                 {% endif %}
                                 {% if asientos.numero_asiento == "5B" %}
                                 <div class="form-check form-check-inline">
-                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado }} >
+                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado_check }} >
                                     <label
                                         id="label-{{ asientos.id }}"
-                                        class="btn  {% if asientos.estado == "checked" %} 
+                                        class="btn  {% if asientos.estado_check == "checked" %} 
                                                         btn-danger active 
                                                     {% else %}
                                                         btn-success active
                                                     {% endif %}" 
                                                     for="btn-check-{{asientos.id}}" 
-                                                    {% if asientos.estado == 'checked' %}
+                                                    {% if asientos.estado_check == 'checked' %}
                                                         data-bs-toggle="button"
                                                         aria-pressed="true"
                                                     {% else %}
@@ -451,16 +460,16 @@
                                 {% endif %}
                                 {% if asientos.numero_asiento == "5C" %}
                                 <div class="form-check form-check-inline ml-5">
-                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado }} >
+                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado_check }} >
                                     <label
                                         id="label-{{ asientos.id }}"
-                                        class="btn  {% if asientos.estado == "checked" %} 
+                                        class="btn  {% if asientos.estado_check == "checked" %} 
                                                         btn-danger active 
                                                     {% else %}
                                                         btn-success active
                                                     {% endif %}" 
                                                     for="btn-check-{{asientos.id}}" 
-                                                    {% if asientos.estado == 'checked' %}
+                                                    {% if asientos.estado_check == 'checked' %}
                                                         data-bs-toggle="button"
                                                         aria-pressed="true"
                                                     {% else %}
@@ -473,16 +482,16 @@
                                 {% endif %}
                                 {% if asientos.numero_asiento == "5D" %}
                                 <div class="form-check form-check-inline">
-                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado }} >
+                                    <input name="asientos_seleccionados" value="{{ asientos.id }}" type="checkbox" class="btn-check" id="btn-check-{{asientos.id}}" autocomplete="off" {{ asientos.estado_check }} >
                                     <label
                                         id="label-{{ asientos.id }}"
-                                        class="btn  {% if asientos.estado == "checked" %} 
+                                        class="btn  {% if asientos.estado_check == "checked" %} 
                                                         btn-danger active 
                                                     {% else %}
                                                         btn-success active
                                                     {% endif %}" 
                                                     for="btn-check-{{asientos.id}}" 
-                                                    {% if asientos.estado == 'checked' %}
+                                                    {% if asientos.estado_check == 'checked' %}
                                                         data-bs-toggle="button"
                                                         aria-pressed="true"
                                                     {% else %}
@@ -500,15 +509,15 @@
                                         style="background-color: #000000; border-color: #000000; min-width: 150px;"
                                         onmouseover="this.style.transform='scale(1.01)'; this.style.backgroundColor='#2c2c2c';"
                                         onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#000000';">
-                                        <i class="fas fa-save"></i> Reservar asientos
+                                        <i class="fa fa-ticket" aria-hidden="true"></i>  Reservar asientos
                                     </button>
                                 </div>
                                 <div class="form-group" id="cancelSeatsBtn" style="min-width: 150px;">
-                                    <a href="javascript:history.back()" class="btn btn-dark w-100"
+                                    <a href={% url 'ruta_disponible' %} class="btn btn-dark w-100"
                                         style="background-color: #000000; border-color: #000000; min-width: 150px;"
                                         onmouseover="this.style.transform='scale(1.01)'; this.style.backgroundColor='#2c2c2c';"
                                         onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#000000';">
-                                        <i class="fas fa-save"></i> Cancelar
+                                        Cancelar
                                     </a>
                                 </div>
                             </div>
@@ -523,12 +532,10 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Obtiene todos los checkboxes con clase btn-check
         document.querySelectorAll('.btn-check').forEach(function(checkbox) {
             checkbox.addEventListener('change', function() {
-                console.log("Checkbox clicked: ", this.checked);
-                var id = this.id; // Obtén el ID del checkbox
-                var label = document.getElementById('label-' + id.split('-').pop()); // Obtén el label correspondiente
+                var id = this.id;
+                var label = document.getElementById('label-' + id.split('-').pop());
     
                 if (this.checked) {
                     label.classList.remove('btn-success');

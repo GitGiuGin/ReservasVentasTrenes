@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Detalles de la Reserva</h1>
+
+<p><strong>ID del Cliente:</strong> {{ cliente_id }}</p>
+<p><strong>Nombres:</strong> {{ nombres }}</p>
+<p><strong>ID de la Reserva:</strong> {{ reserva_id }}</p>
+<p><strong>Fecha de Reserva:</strong> {{ fecha_reserva }}</p>
+<p><strong>ID del Asiento:</strong> {{ asiento_id }}</p>
+<p><strong>Número de Asiento:</strong> {{ numero_asiento }}</p>
+<p><strong>Estado del Asiento:</strong> {{ asiento_estado }}</p>
+<p><strong>ID de la Ruta:</strong> {{ ruta_id }}</p>
+<p><strong>Origen:</strong> {{ origen }}</p>
+<p><strong>Destino:</strong> {{ destino }}</p>
+
+<a href="{% url 'mi_cuenta' %}">Regresar a mi perfil</a>
+
+{% endblock %}
