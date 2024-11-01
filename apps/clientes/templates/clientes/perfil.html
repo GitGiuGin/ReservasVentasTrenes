@@ -193,13 +193,15 @@
             </div>
             <div class="modal-body">
                 <div class="mt-3">
-                    <form method="GET" action="{% url 'clientes_lista' %}" class="mb-4 w-100">
+                    <form id="searchForm" method="GET" action="{% url 'mi_cuenta' %}" class="mb-4 w-100">
                         <div class="row">
                             <div class="col-md-6 mb-2">
                                 <div class="input-group">
-                                    <input type="text" name="searchCliente" class="form-control"
-                                        placeholder="Buscar reserva" value="{{ request.GET.searchCliente }}">
-                                    <button class="btn btn-dark" type="submit">Buscar</button>
+                                    <input type="text" name="searchReserva" class="form-control"
+                                        placeholder="Buscar reserva" value="{{ request.GET.searchReserva }}">
+                                    <button class="btn btn-dark" type="submit" onclick="submitSearch()">
+                                        <i class="fa fa-search" aria-hidden="true"></i> Buscar
+                                    </button>
                                 </div>
                             </div>
                             <div class="col-md-auto mb-2">
@@ -234,24 +236,24 @@
                         <tr>
                             <td>{{ reserva.ruta__origen }}</td>
                             <td>{{ reserva.ruta__destino }}</td>
-                            <td>{{ reserva.ruta__fecha_salida }}</td>
-                            <td>{{ reserva.ruta__hora_salida }}</td>
-                            <td>{{ reserva.fecha_reserva }}</td>
+                            <td>{{ reserva.ruta__fecha_salida|date:"d/m/Y" }}</td>
+                            <td>{{ reserva.ruta__hora_salida|time:"H:i" }}</td>
+                            <td>{{ reserva.fecha_reserva|date:"d/m/Y" }}</td>
                             <td>{{ reserva.estado }}</td>
                             <td>{{ reserva.ruta__tren__nombre }}</td>
-                            <td>{{ reserva.asientos_disponibles }}</td>
+                            <td class="text-center">{{ reserva.asientos_reservados }}</td>
                             <td>
                                 <div class="d-flex">
-                                    <a href="{% url 'detalle_reserva' reserva.id %}" class="btn btn-dark mr-1" >
-                                        <ia class="fa fa-eye" aria-hidden="true"></i>
+                                    <a href="{% url 'detalle_reserva' reserva.id %}" class="btn btn-dark mr-1" title="Ver reserva">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
                                     </a>
-                                    <button type="button" class="btn btn-dark mr-1">
+                                    <a href="{% url 'editar_asiento' reserva.id reserva.ruta__id %}" class="btn btn-dark mr-1" title="Editar reserva">
                                         <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button type="submit" class="btn btn-dark mr-1">
+                                    </a>
+                                    <button type="submit" class="btn btn-dark mr-1" title="Descargar PDF">
                                         <i class="fa fa-download" aria-hidden="true"></i>
                                     </button>
-                                    <button type="submit" class="btn btn-dark mr-1">
+                                    <button type="submit" class="btn btn-dark mr-1" title="Enviar a correo">
                                         <i class="fa fa-envelope" aria-hidden="true"></i>
                                     </button>
                                 </div>

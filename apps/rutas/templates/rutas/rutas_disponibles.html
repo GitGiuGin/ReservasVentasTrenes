@@ -26,7 +26,7 @@
     <tbody>
         {% for item in rutas_disponibles %}
         <tr>
-            <td class="align-middle p-1">ID RUTA {{ item.ruta.id }} {{ item.ruta.origen }} - {{ item.ruta.destino }}</td>
+            <td class="align-middle p-1">{{ item.ruta.origen }} - {{ item.ruta.destino }}</td>
             <td class="text-center align-middle p-1">{{ item.ruta.duracion_formateada }}</td>
             <td class="text-center align-middle p-1">{{ item.ruta.fecha_salida_formateada }} - {{ item.ruta.horario_salida_formateado}}</td>
             <td class="text-center align-middle p-1">{{ item.ruta.precio_bs }}</td>

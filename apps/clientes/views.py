@@ -7,6 +7,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 from django.contrib import messages
 from django.db.models import Count
+from django.db.models import Q
 from .models import Cliente
 from apps.reservas.models import Reserva
 from apps.asientos.models import Asiento
@@ -140,6 +141,7 @@ def custom_login_view(request):
 @login_required
 def perfil_usuario(request):
     usuario = request.user
+    search_query = request.GET.get("searchReserva", "")  # Obtén el valor de búsqueda
     if request.method == "POST":
         contraseña = request.POST.get("txtContraseña")
         confirmar_contraseña = request.POST.get("txtConfContraseña")
@@ -157,18 +159,27 @@ def perfil_usuario(request):
         return redirect("mi_cuenta")  
     
     # Consulta adaptada
-    reservas = Reserva.objects.filter(cliente__id=usuario.id).annotate(
-        asientos_disponibles=Count('reservas_asientos__estado')  # Contamos el número de asientos reservados
-    ).select_related('ruta', 'ruta__tren').values(
-        'ruta__origen',        # Ruta origen
-        'ruta__destino',       # Ruta destino
-        'ruta__fecha_salida',    # Día de salida
-        'ruta__hora_salida', # Hora de salida
-        'fecha_reserva',       # Fecha de reserva
-        'estado',              # Estado de la reserva
-        'id',                  # ID de la reserva
-        'ruta__tren__nombre',  # Nombre del tren
-    ).order_by('id')  # Ordenar por el ID de la reserva
+    reservas = Reserva.objects.filter(
+        cliente__id=usuario.id
+    ).annotate(
+        asientos_reservados=Count('reservas_asientos')  # Contamos el número de asientos reservados
+    ).select_related('ruta', 'ruta__tren').filter(
+        Q(ruta__origen__icontains=search_query) |
+        Q(ruta__destino__icontains=search_query) |
+        Q(fecha_reserva__icontains=search_query) |
+        Q(estado__icontains=search_query)           
+    ).values(
+        'ruta__id',
+        'ruta__origen',
+        'ruta__destino',
+        'ruta__fecha_salida',
+        'ruta__hora_salida',
+        'fecha_reserva',
+        'estado',
+        'id',
+        'ruta__tren__nombre',
+        'asientos_reservados'
+    ).order_by('id')
     
     data = {
         "usuario": usuario,
@@ -185,20 +196,16 @@ def reservas_usuario (request):
 
 @login_required
 def detalle_reserva(request, reserva_id):
+    usuario = request.user
     reserva = get_object_or_404(Reserva, id=reserva_id)  # Obtener la reserva
 
-    # Acceder al tren desde la reserva
-    tren = reserva.ruta.tren  # Asegúrate de que la reserva tiene un campo `ruta`
+    # Obtener los asientos reservados asociados a esta reserva
+    asientos_reservados = reserva.reservas_asientos.all()
 
-    # Ahora puedes acceder a las rutas relacionadas con este tren
-    rutas = tren.rutas.all()  # Esto obtiene todas las rutas asociadas a este tren
-
-    # Continúa con la lógica de tu vista
-    context = {
+    data = {
+        'usuario' : usuario,
         'reserva': reserva,
-        'tren': tren,
-        'rutas': rutas,
-        # Otros contextos que necesites
+        'asientos_reservados': asientos_reservados  # Pasar los asientos al contexto
     }
 
-    return render(request, 'tu_template.html', context)
+    return render(request, 'clientes/detalle_reserva.html', data)
