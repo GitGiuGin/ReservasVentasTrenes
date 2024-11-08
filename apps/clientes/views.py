@@ -5,14 +5,16 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
-from django.contrib import messages
+from django.core.mail import EmailMessage
+from django.conf import settings
 from django.db.models import Count
 from django.db.models import Q
+from django.template.loader import render_to_string
+from django.utils import timezone
 from .models import Cliente
+from weasyprint import HTML
+from django.http import HttpResponse
 from apps.reservas.models import Reserva
-from apps.asientos.models import Asiento
-from apps.trenes.models import Tren
-from apps.rutas.models import Ruta
 
 #Creacion de cliente
 def clientesForm(request):
@@ -158,6 +160,8 @@ def perfil_usuario(request):
         
         return redirect("mi_cuenta")  
     
+    today = timezone.now().date()
+    
     # Consulta adaptada
     reservas = Reserva.objects.filter(
         cliente__id=usuario.id
@@ -183,7 +187,8 @@ def perfil_usuario(request):
     
     data = {
         "usuario": usuario,
-        "reservas": reservas
+        "reservas": reservas,
+        'today': today
     }
     return render(request, "clientes/perfil.html", data)
 
@@ -197,15 +202,55 @@ def reservas_usuario (request):
 @login_required
 def detalle_reserva(request, reserva_id):
     usuario = request.user
-    reserva = get_object_or_404(Reserva, id=reserva_id)  # Obtener la reserva
-
-    # Obtener los asientos reservados asociados a esta reserva
+    reserva = get_object_or_404(Reserva, id=reserva_id)
     asientos_reservados = reserva.reservas_asientos.all()
-
+    
     data = {
-        'usuario' : usuario,
+        'usuario': usuario,
         'reserva': reserva,
-        'asientos_reservados': asientos_reservados  # Pasar los asientos al contexto
+        'asientos_reservados': asientos_reservados,
     }
 
+    if request.GET.get('generar_pdf') == 'True':
+        html_string = render_to_string('clientes/ticket.html', data)
+        pdf_file = HTML(string=html_string).write_pdf()
+
+        response = HttpResponse(pdf_file, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="Ticket.pdf"'
+        return response
+
     return render(request, 'clientes/detalle_reserva.html', data)
+
+@login_required
+def enviar_ticket_por_email(request, reserva_id):
+    usuario = request.user
+    reserva = get_object_or_404(Reserva, id=reserva_id)
+    asientos_reservados = reserva.reservas_asientos.all()
+
+    # Datos para la plantilla del PDF
+    data = {
+        'usuario': usuario,
+        'reserva': reserva,
+        'asientos_reservados': asientos_reservados,
+    }
+
+    # Generar el PDF con los datos
+    html_string = render_to_string('clientes/ticket.html', data)
+    pdf_file = HTML(string=html_string).write_pdf()
+
+    # Crear el correo
+    email = EmailMessage(
+        subject="Tu Reserva - Ticket PDF",
+        body="Adjunto encontrarás el ticket de tu reserva.",
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=[usuario.correo]  # El correo del usuario que ha iniciado sesión
+    )
+
+    # Adjuntar el archivo PDF
+    email.attach('Ticket.pdf', pdf_file, 'application/pdf')
+
+    # Enviar el correo
+    email.send()
+
+    # Redirigir o devolver una respuesta después de enviar el correo
+    return HttpResponse("El ticket ha sido enviado a tu correo electrónico.")

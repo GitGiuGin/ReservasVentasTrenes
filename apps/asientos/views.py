@@ -10,21 +10,10 @@ from apps.asientos.models import Asiento
 from apps.clientes.models import Cliente
 from datetime import datetime
 
-
 # Create your views here.
 def obtenerFechaActual(request):
     fecha_actual = datetime.now().strftime("%d/%m/%Y")
     return fecha_actual
-
-def liberarAsiento(asiento_id):
-    try:
-        reserva_asiento  = ReservaAsiento.objects.get(id=asiento_id)
-        reserva_asiento.estado = False
-        reserva_asiento.reserva = None
-        reserva_asiento.save()
-        return True
-    except Asiento.DoesNotExist:
-        return False
 
 def obtenerEstado(asiento_id, ruta_id):
     try:
@@ -70,7 +59,6 @@ def verificarDisponibilidad(ruta_id):
 
 def obtenerTrenes(request):
     trenes_activos = Tren.objects.filter(estado=True)
-
 
 def formEditAsiento(request, reserva_id, ruta_id):
     reserva = get_object_or_404(Reserva, id=reserva_id)

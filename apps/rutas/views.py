@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.db import models
 from django.db import transaction
+from django.db.models import Q
 from django.views.generic import ListView
 from django.contrib import messages
+from django.utils import timezone
 from .models import Ruta
 from apps.trenes.models import Tren
 from apps.asientos.models import Asiento
@@ -123,6 +125,15 @@ def rutas_disponibles(request):
     query = request.GET.get('searchRuta', '')
     rutas = Ruta.objects.filter(tren__estado=True).select_related('tren')
 
+    # Obtener la fecha y hora actual
+    ahora = timezone.now()
+
+    # Filtrar las rutas cuyo fecha_salida y hora_salida no sean posteriores a la fecha y hora actuales
+    rutas = rutas.filter(
+        Q(fecha_salida__gt=ahora.date()) |  # Las rutas cuya fecha_salida ya pasó
+        Q(fecha_salida=ahora.date(), hora_salida__gte=ahora.time())  # Si la fecha es hoy, comprobamos la hora de salida
+    )
+    
     # Si hay una búsqueda, filtramos las rutas
     if query:
         query = query.title()

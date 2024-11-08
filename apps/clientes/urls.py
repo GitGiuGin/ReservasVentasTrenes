@@ -13,4 +13,6 @@ urlpatterns = [
     path('account/', perfil_usuario, name='mi_cuenta'),
     path('reservas/', reservas_usuario, name='mis_reservas'),
     path('detalle_reserva/<int:reserva_id>/', detalle_reserva, name='detalle_reserva'),
+    path('detalle_reserva/<int:reserva_id>/pdf/', detalle_reserva, {'generar_pdf': True}, name='generar_ticket'),
+    path('enviar_ticket/<int:reserva_id>/', enviar_ticket_por_email, name='enviar_ticket'),
 ]
