@@ -17,4 +17,4 @@ class Tren (models.Model):
 
     @property
     def estado_display(self):
-        return "Operativo" if self.estado else "Fuera de servicio"
+        return "Activo" if self.estado else "Inactivo"

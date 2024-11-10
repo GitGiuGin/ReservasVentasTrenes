@@ -57,13 +57,13 @@
 
 <!-- Modal que contiene los detalles individuales de cada asiento -->
 <div class="modal fade" id="pdfModal" tabindex="-1" aria-labelledby="pdfModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered w-auto"> <!-- Cambios aquí -->
+    <div class="modal-dialog modal-dialog-centered w-auto">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="pdfModalLabel">Detalles de Asientos Reservados</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="max-height: 600px; overflow-y: auto;">
                 {% for asiento in asientos_reservados %}
                     <div class="card mb-3">
                         <div class="card-header">
@@ -103,11 +103,12 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     <i class="fa fa-reply" aria-hidden="true"></i> Cerrar
                 </button>
-                <button type="button" class="btn btn-dark">
+                <a href="{% url 'detalle_reserva' reserva.id %}?generar_pdf=True" class="btn btn-dark">
                     <i class="fa fa-download" aria-hidden="true"></i> Descargar PDF
-                </button>
+                </a>
             </div>
         </div>
     </div>
 </div>
+
 {% endblock %}

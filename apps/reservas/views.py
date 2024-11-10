@@ -60,12 +60,6 @@ def registrarReserva(request):
         )
     return redirect('reserva_lista')
 
-#Eliminar Cliente
-def eliminarReserva (request, id):
-    reserva = Reserva.objects.get(id=id)
-    reserva.estado = None
-    return redirect('ruta_lista')
-
 #Consultar cliente
 class ReservaListView (ListView):
     model = Reserva
@@ -243,3 +237,11 @@ def confEditarReserva(request, reserva_id):
         return render(request, 'reservas/reserva_formEdit.html', data)
     
     return render(request, 'reservas/reserva_formEdit.html')
+
+def cancelar_reserva (request, reserva_id):
+    reserva = get_object_or_404(Reserva, id=reserva_id)
+    reserva.delete()
+    eliminar_registros = ReservaAsiento.objects.filter(reserva_id=reserva_id)
+    eliminar_registros.delete()
+    
+    return redirect('mi_cuenta')

@@ -250,12 +250,15 @@
                                     <a href="{% url 'editar_asiento' reserva.id reserva.ruta__id %}" class="btn btn-dark mr-1" title="Editar reserva">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <button type="submit" class="btn btn-dark mr-1" title="Descargar PDF">
-                                        <i class="fa fa-download" aria-hidden="true"></i>
-                                    </button>
-                                    <button type="submit" class="btn btn-dark mr-1" title="Enviar a correo">
-                                        <i class="fa fa-envelope" aria-hidden="true"></i>
-                                    </button>
+                                    <a href="#" class="btn btn-dark mr-1 cancelar-reserva-btn" data-id="{{ reserva.id }}" data-bs-toggle="modal" data-bs-target="#confirmarCancelarModal" title="Cancelar reserva">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </a>
+                                    <form method="POST" action="{% url 'enviar_ticket' reserva.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-dark mr-1" title="Enviar a correo">
+                                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -270,12 +273,78 @@
     </div>
 </div>
 
+<!-- Modal de confirmación para cancelar reserva -->
+<div class="modal fade" id="confirmarCancelarModal" tabindex="-1" aria-labelledby="confirmarCancelarModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmarCancelarModalLabel">Confirmar Cancelación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que deseas cancelar esta reserva?</p>
+            </div>
+            <div class="modal-footer">
+                <form id="cancelarReservaForm" method="POST" action="">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
+                        <i class="fa fa-times" aria-hidden="true"></i> No
+                    </button>
+                    <button type="submit" class="btn btn-dark">
+                        <i class="fa fa-check" aria-hidden="true"></i> Sí 
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         if (document.querySelector('.alert')) {
             var modal = new bootstrap.Modal(document.getElementById('exampleModal'));
             modal.show();
         }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Obtener la fecha actual
+        const today = new Date();
+
+        // Convertir la fecha a formato adecuado para la comparación (YYYY-MM-DD)
+        const currentDate = today.toISOString().split('T')[0];
+
+        // Obtener todas las filas de la tabla
+        const rows = document.querySelectorAll('#modalMisReservas tbody tr');
+
+        rows.forEach(function (row) {
+            // Obtener la fecha de la ruta (suponiendo que está en el formato 'd/m/Y')
+            const routeDateStr = row.querySelector('td:nth-child(3)').textContent;
+            const routeDate = new Date(routeDateStr.split('/').reverse().join('-'));
+
+            // Si la fecha de la ruta es anterior a la fecha actual, deshabilitar los botones
+            const buttons = row.querySelectorAll('.btn');
+            if (routeDate < today) {
+                buttons.forEach(function (button) {
+                    button.disabled = true;
+                    button.classList.add('disabled'); // Opcional: Añadir la clase 'disabled' para mayor visibilidad
+                });
+            }
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const cancelarReservaBtns = document.querySelectorAll('.cancelar-reserva-btn');
+        const cancelarReservaForm = document.getElementById('cancelarReservaForm');
+
+        cancelarReservaBtns.forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                const reservaId = button.getAttribute('data-id');
+                const actionUrl = `{% url 'cancelar_reserva' 0 %}`.replace('0', reservaId);
+                cancelarReservaForm.setAttribute('action', actionUrl);
+            });
+        });
     });
 </script>
 {% endblock %}
