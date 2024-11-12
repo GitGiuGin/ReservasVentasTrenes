@@ -3,7 +3,6 @@
 {% block content %}
 
 <div class="container mt-2">
-
     <form action="{% url 'ruta_registrar' %}" method="POST" class="p-4 shadow-lg rounded"
         style="max-width: 600px; margin: auto; background-color: #f8f9fa;"> {% csrf_token %}
         <h2 class="text-center mb-4">Registro de Ruta de Tren</h2>
@@ -12,49 +11,43 @@
             <div class="form-group col-md-6">
                 <label for="origen" class="form-label">Origen</label>
                 <input type="text" class="form-control" id="txtOrigen" name="txtOrigen"
-                    placeholder="Ingrese la estación de origen" required>
+                    placeholder="Ingrese la estación de origen" required value="{{ request.POST.txtOrigen|default:'' }}">
                 <div class="invalid-feedback">Por favor, ingrese la estación de origen.</div>
             </div>
             <div class="form-group col-md-6">
                 <label for="destino" class="form-label">Destino</label>
                 <input type="text" class="form-control" id="txtDestino" name="txtDestino"
-                    placeholder="Ingrese la estación de destino" required>
+                    placeholder="Ingrese la estación de destino" required value="{{ request.POST.txtDestino|default:'' }}">
                 <div class="invalid-feedback">Por favor, ingrese la estación de destino.</div>
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="duracion" class="form-label">Duración (en minutos)</label>
-                <input type="number" class="form-control" id="numDuracion" name="numDuracion"
-                    placeholder="Ingrese la duración de la ruta" min="1" required>
+                <input type="time" class="form-control" id="numDuracion" name="numDuracion"
+                    placeholder="Ingrese la duración de la ruta" min="1" required value="{{ request.POST.numDuracion|default:'' }}">
                 <div class="invalid-feedback">Por favor, ingrese una duración válida.</div>
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="dias_disponibles" class="form-label">Días de salida</label>
-                <select class="form-control" id="selectDiasDisponibles" name="selectDiaSalida" required>
-                    <option value="Lunes">Lunes</option>
-                    <option value="Martes">Martes</option>
-                    <option value="Miércoles">Miércoles</option>
-                    <option value="Jueves">Jueves</option>
-                    <option value="Viernes">Viernes</option>
-                    <option value="Sábado">Sábado</option>
-                    <!-- Añade más días si es necesario -->
-                </select>
-                <div class="invalid-feedback">Por favor, seleccione los días en que la ruta está disponible.</div>
+                <input type="date" class="form-control" name="fecha_salida">
             </div>
             <div class="form-group col-md-6">
                 <label for="dias_disponibles" class="form-label">Días de retorno</label>
-                <select class="form-control" id="selectDiasDisponibles" name="selectDiaRetorno" required>
-                    <option value="Lunes">Lunes</option>
-                    <option value="Martes">Martes</option>
-                    <option value="Miércoles">Miércoles</option>
-                    <option value="Jueves">Jueves</option>
-                    <option value="Viernes">Viernes</option>
-                    <option value="Sábado">Sábado</option>
-                    <!-- Añade más días si es necesario -->
-                </select>
+                <input type="date" class="form-control" name="fecha_retorno">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="dias_disponibles" class="form-label">Horario salida</label>
+                <input type="time" class="form-control" id="horarioSalida" name="horarioSalida" required value="{{ request.POST.horarioSalida|default:'' }}">
+                <div class="invalid-feedback">Por favor, seleccione los días en que la ruta está disponible.</div>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="dias_disponibles" class="form-label">Horario retorno</label>
+                <input type="time" class="form-control" id="horarioRetorno" name="horarioRetorno" required value="{{ request.POST.horarioRetorno|default:'' }}">
                 <div class="invalid-feedback">Por favor, seleccione los días en que la ruta está disponible.</div>
             </div>
         </div>
@@ -62,7 +55,7 @@
             <div class="form-group col-md-6">
                 <label for="precio" class="form-label">Precio</label>
                 <input type="number" class="form-control" id="numPrecio" name="numPrecio"
-                    placeholder="Ingrese el precio de la ruta" step="0.01" min="0" required>
+                    placeholder="Ingrese el precio de la ruta" step="0.01" min="0" required value="{{ request.POST.numPrecio|default:'' }}">
                 <div class="invalid-feedback">Por favor, ingrese un precio válido.</div>
             </div>
             <div class="form-group col-md-6">
@@ -70,14 +63,19 @@
                 <select class="form-control" id="selectTren" name="selectTren">
                     <option value="">Seleccione un tren </option>
                     {% for tren in trenes %}
-                    <option value="{{ tren.id }}">{{ tren.nombre }}</option>
+                    <option value="{{ tren.id }}" >{{ tren.nombre }}</option>
                     {% endfor %}
                 </select>
                 <div class="invalid-feedback">Por favor, seleccione un tren si corresponde.</div>
             </div>
         </div>
+        {% if messages %}
+                {% for message in messages %}
+                    <label>{{ message }}</label>
+                {% endfor %}
+            {% endif %}
         <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-dark">Registrar Ruta</button>
+            <button type="submit" class="btn btn-dark"><i class="fa fa-check" aria-hidden="true"></i> Registrar Ruta</button>
             <a href="javascript:history.back()" type="reset" class="btn btn-dark">Cancelar</a>
         </div>
     </form>

@@ -1,55 +1,79 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-lg">
     <div class="container-fluid">
-        <a class="navbar-brand fw-bold text-warning" href="{% url 'base' %}">Reservas y Ventas</a>
+        <a class="navbar-brand fw-bold text-warning" href="{% url 'base' %}">TrenExpress</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
             aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav mx-auto">
-                <a class="nav-link active text-light" aria-current="page" href="{% url 'base' %}">Home</a>
+                <a class="nav-link active text-light" aria-current="page" href="{% url 'base' %}">
+                    <i class="fa fa-home" aria-hidden="true"></i> Inicio
+                </a>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        Planifica tu viaje
+                        <i class="fa fa-map" aria-hidden="true"></i> Planifica tu viaje
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href={% url 'ruta_disponible' %}>Horarios disponibles</a></li>
+                        <li><a class="dropdown-item" href="{% url 'ruta_disponible' %}">Horarios disponibles</a></li>
                     </ul>
                 </li>
+                <!-- Mostrar solo si el usuario es administrador -->
+                {% if user.is_authenticated and user.tipo_usuario == 'administrador' %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        Trenes
+                        <i class="fa fa-train" aria-hidden="true"></i> Trenes
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href={% url 'trenes_nuevo' %}>Nuevo tren</a></li>
-                        <li><a class="dropdown-item" href={% url 'trenes_lista' %}>Desactivar tren</a></li>
+                        <li><a class="dropdown-item" href="{% url 'trenes_nuevo' %}">Nuevo tren</a></li>
+                        <li><a class="dropdown-item" href="{% url 'trenes_lista' %}">Consultar trenes</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-light" href="{% url 'clientes_index' %}" id="navbarDropdown"
+                    <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
                         role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Clientes
+                        <i class="fa fa-users" aria-hidden="true"></i> Clientes
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href={% url 'clientes_nuevo' %}>Nuevo cliente</a></li>
-                        <li><a class="dropdown-item" href={% url 'clientes_lista' %}>Consultar cliente</a></li>
+                        <li><a class="dropdown-item" href="{% url 'clientes_nuevo' %}">Nuevo cliente</a></li>
+                        <li><a class="dropdown-item" href="{% url 'clientes_lista' %}">Consultar cliente</a></li>
                     </ul>
                 </li>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        Rutas
+                        <i class="fa fa-map-marker" aria-hidden="true"></i> Rutas
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href={% url 'ruta_nuevo' %}>Nueva ruta</a></li>
-                        <li><a class="dropdown-item" href={% url 'ruta_lista' %}>Consultar rutas</a></li>
+                        <li><a class="dropdown-item" href="{% url 'ruta_nuevo' %}">Nueva ruta</a></li>
+                        <li><a class="dropdown-item" href="{% url 'ruta_lista' %}">Consultar rutas</a></li>
                     </ul>
                 </li>
+                {% endif %}
             </div>
             <div class="navbar-nav ms-auto">
-                <a class="nav-link text-light fw-bold" href="#">Iniciar Sesión</a>
+                
+                {% if user.is_authenticated %}
+                    <a class="nav-link text-light fw-bold" href="{% url 'mi_cuenta' %}">
+                        <i class="fa fa-user-circle" aria-hidden="true"></i> Mi Cuenta
+                    </a>
+                    <!-- Formulario para logout con redirección -->
+                    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{% url 'base' %}">
+                        <button type="submit" class="nav-link btn btn-link text-light fw-bold">
+                            <i class="fa fa-reply" aria-hidden="true"></i> Cerrar sesión
+                        </button>
+                    </form>
+                {% else %}
+                    <!-- Si no está autenticado, mostrar el enlace para iniciar sesión -->
+                    <a class="nav-link text-light fw-bold" href="{% url 'login' %}">
+                        <i class="fa fa-sign-in" aria-hidden="true"></i> Iniciar Sesión
+                    </a>
+                {% endif %}
             </div>
         </div>
     </div>

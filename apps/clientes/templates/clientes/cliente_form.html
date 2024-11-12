@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="container mt-2">
-    <form action="{% url 'cliente_registrar' %}" method="POST" class="p-4 shadow-lg rounded"
+    <form action="{% url 'cliente_registrar_login' %}" method="POST" class="p-4 shadow-lg rounded"
         style="max-width: 600px; margin: auto; background-color: #f8f9fa;">
         {% csrf_token %}
 
@@ -12,24 +12,21 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="txtNombre">Nombre:</label>
-                <input type="text" class="form-control" id="txtNombre" name="txtNombre" placeholder="Nombre" required>
+                <input type="text" class="form-control" id="txtNombre" name="txtNombre" placeholder="Nombre" required value="{{ request.POST.txtNombre|default:'' }}">
             </div>
             <div class="form-group col-md-6">
                 <label for="txtApellidoPaterno">Apellido Paterno:</label>
-                <input type="text" class="form-control" id="txtApellidoPaterno" name="txtApellidoPaterno"
-                    placeholder="Ap. Paterno" required>
+                <input type="text" class="form-control" id="txtApellidoPaterno" name="txtApellidoPaterno" placeholder="Ap. Paterno" required value="{{ request.POST.txtApellidoPaterno|default:'' }}"> 
             </div>
         </div>
-
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="txtApellidoMaterno">Apellido Materno:</label>
-                <input type="text" class="form-control" id="txtApellidoMaterno" name="txtApellidoMaterno"
-                    placeholder="Ap. Materno" required>
+                <input type="text" class="form-control" id="txtApellidoMaterno" name="txtApellidoMaterno" placeholder="Ap. Materno" required value="{{ request.POST.txtApellidoMaterno|default:'' }}">
             </div>
             <div class="form-group col-md-6">
                 <label for="txtCorreo">Correo:</label>
-                <input type="email" class="form-control" id="txtCorreo" name="txtCorreo" placeholder="Correo" required>
+                <input type="email" class="form-control" id="txtCorreo" name="txtCorreo" placeholder="Correo" required required value="{{ request.POST.txtCorreo|default:'' }}">
                 <small id="emailHelp" class="form-text text-muted">Nunca compartiremos tu correo con nadie más.</small>
             </div>
         </div>
@@ -37,16 +34,13 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="txtTelefono">Teléfono:</label>
-                <input type="text" class="form-control" id="txtTelefono" name="txtTelefono" placeholder="Teléfono"
-                    required>
+                <input type="text" class="form-control" id="txtTelefono" name="txtTelefono" placeholder="Teléfono" required value="{{ request.POST.txtTelefono|default:'' }}">
             </div>
             <div class="form-group col-md-6">
                 <label for="txtDireccion">Dirección:</label>
-                <input type="text" class="form-control" id="txtDireccion" name="txtDireccion" placeholder="Dirección"
-                    required>
+                <input type="text" class="form-control" id="txtDireccion" name="txtDireccion" placeholder="Dirección"required value="{{ request.POST.txtDireccion|default:'' }}">
             </div>
         </div>
-
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="txtContraseña">Contraseña:</label>
@@ -59,14 +53,18 @@
                     placeholder="Confirmar Contraseña" required>
             </div>
         </div>
-
+        {% if messages %}
+            {% for message in messages %}
+                <label class="text-danger">{{ message }}</label>
+            {% endfor %}
+        {% endif %}
         <div class="form-row">
             <div class="form-group col-md-6">
                 <a href="javascript:history.back()" class="btn btn-dark btn-block mt-3"
                     style="background-color: #000000; border-color: #000000"
                     onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#2c2c2c';"
                     onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#000000';">
-                    <i class="fas fa-save"></i> Cancelar
+                    Cancelar
                 </a>
             </div>
             <div class="form-group col-md-6">
@@ -74,7 +72,7 @@
                     style="background-color: #000000; border-color: #000000"
                     onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#2c2c2c';"
                     onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#000000';">
-                    <i class="fas fa-save"></i> Confirmar
+                    <i class="fa fa-check" aria-hidden="true"></i> Confirmar
                 </button>
             </div>
         </div>

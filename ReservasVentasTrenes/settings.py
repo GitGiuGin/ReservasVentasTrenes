@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apps.asientos',
-    'apps.clientes',
+    'apps.clientes.apps.ClientesConfig',
     'apps.pagos',
     'apps.reservas',
     'apps.rutas',
@@ -61,7 +61,10 @@ ROOT_URLCONF = 'ReservasVentasTrenes.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates",],
+        'DIRS': [
+            BASE_DIR / "templates",
+            BASE_DIR / "apps/clientes/templates", 
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,12 +85,12 @@ WSGI_APPLICATION = 'ReservasVentasTrenes.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'reservas_trenes',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',  # o la dirección IP si MySQL está en otro servidor
-        'PORT': '3306',
+        'USER': 'postgres',
+        'PASSWORD': 'Darckhammer1*',
+        'HOST': 'localhost', 
+        'PORT': '5432',
     }
 }
 
@@ -138,3 +141,17 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'clientes.Cliente'
+
+LOGIN_URL = 'login' 
+
+# Configuración del backend de correo electrónico
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# Configuración del servidor SMTP
+EMAIL_HOST = 'smtp.gmail.com'  # Usa el servidor SMTP de tu proveedor
+EMAIL_PORT = 587  # El puerto común para TLS
+EMAIL_USE_TLS = True  # Usar TLS para la seguridad de la conexión
+EMAIL_HOST_USER = 'conejo.marcos.black@gmail.com'  # Tu dirección de correo
+EMAIL_HOST_PASSWORD = 'qppm rnwp jgjw zslc'  # Tu contraseña de correo

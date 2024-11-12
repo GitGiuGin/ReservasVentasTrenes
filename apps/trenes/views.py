@@ -10,7 +10,7 @@ def trenesForm(request):
     return render(request, 'trenes/tren_form.html')
 
 def registrarTren (request):
-    nombre = request.POST['txtNombre']
+    nombre = request.POST['txtNombre'].title()
 
     tren = Tren.objects.create(
         nombre=nombre, 
@@ -49,10 +49,3 @@ def activarTren():
 
 def desactivarTren():
     pass
-#def trenesList(request):
-#    listarTrenes = Tren.objects.all()
-#
-#    data = {
-#        'titulo': 'Gestion Trenes',
-#        'trenes': listarTrenes
-#    }

@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">    
+    <div class="card" style="max-width: 600px; margin: auto;"> <!-- Limitar ancho máximo -->
+        <div class="card-header">
+            <h5 class="card-title">Información de Reserva</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="text-center">
+                            <h3>TrenExpress</h3>
+                        </div>
+                        <p>
+                            <strong>Nombre del cliente: </strong>{{ usuario.nombres }} {{ usuario.apellido_paterno }} {{ usuario.apellido_materno }}
+                        </p>
+                        <strong>Correo: </strong>{{ usuario.correo }}
+                    </li>
+                </ul>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <p class="text-center"><strong><u>DATOS DEL VIAJE</u></strong></p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Origen:</strong> {{ reserva.ruta.origen }}</p>
+                                <p><strong>Fecha de Salida:</strong> {{ reserva.ruta.fecha_salida|date:"d/m/Y" }}</p>
+                            </div>
+                            <div class="col-md-6">  <!-- Segunda columna -->
+                                <p><strong>Destino:</strong> {{ reserva.ruta.destino }}</p>
+                                
+                                <p><strong>Hora de Salida:</strong> {{ reserva.ruta.hora_salida|time:"H:i" }}</p>
+                                <strong>Tren:</strong> {{ reserva.ruta.tren.nombre }}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                    <p><strong>Asientos Reservados:</strong></p>
+                    {% for asiento in asientos_reservados %}
+                        <label class="bg-dark text-white rounded px-2 py-1 d-inline-block my-1">{{ asiento.asiento.numero_asiento }}</label>
+                    {% endfor %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-footer text-end">
+            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#pdfModal">
+                <i class="fa fa-file"></i> Generar PDF
+            </button>
+            <a href="{% url 'mi_cuenta' %}" class="btn btn-dark">Regresar a mi perfil</a>
+        </div>
+    </div>
+</div>
+
+<!-- Modal que contiene los detalles individuales de cada asiento -->
+<div class="modal fade" id="pdfModal" tabindex="-1" aria-labelledby="pdfModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered w-auto">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pdfModalLabel">Detalles de Asientos Reservados</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: 600px; overflow-y: auto;">
+                {% for asiento in asientos_reservados %}
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h3 class="card-title text-center">TrenExpress</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <p>
+                                        <strong>Nombre del cliente: </strong>{{ usuario.nombres }} {{ usuario.apellido_paterno }} {{ usuario.apellido_materno }}
+                                    </p>
+                                    <strong>Correo: </strong>{{ usuario.correo }}
+                                </li>
+                            </ul>
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <p class="text-center"><strong><u>DATOS DEL VIAJE</u></strong></p>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p><strong>Origen:</strong> {{ reserva.ruta.origen }}</p>
+                                            <p><strong>Fecha de Salida:</strong> <br> {{ reserva.ruta.fecha_salida|date:"d/m/Y" }}</p>
+                                            <strong>Asiento:</strong> <br> "{{ asiento.asiento.numero_asiento }}"
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>Destino:</strong> {{ reserva.ruta.destino }}</p>
+                                            <p><strong>Hora de Salida:</strong> <br>{{ reserva.ruta.hora_salida|time:"H:i" }}</p>
+                                            <strong>Tren:</strong> <br> {{ reserva.ruta.tren.nombre }}
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fa fa-reply" aria-hidden="true"></i> Cerrar
+                </button>
+                <a href="{% url 'detalle_reserva' reserva.id %}?generar_pdf=True" class="btn btn-dark">
+                    <i class="fa fa-download" aria-hidden="true"></i> Descargar PDF
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
