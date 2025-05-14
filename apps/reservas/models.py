@@ -5,7 +5,7 @@ from apps.rutas.models import Ruta
 # Create your models here.
 class Reserva (models.Model):
     fecha_reserva = models.DateField(verbose_name='Fecha de Reserva', null=True, blank=True)
-    estado = models.BooleanField(default=False)
+    estado = models.CharField(default="Disponible", max_length=20, verbose_name="Estado reserva")
     cliente = models.ForeignKey(Cliente, null=True, blank=True, on_delete=models.CASCADE)
     ruta = models.ForeignKey(Ruta, on_delete=models.CASCADE, null=True, blank=True, related_name='reservas')
     

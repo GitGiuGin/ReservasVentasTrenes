@@ -12,6 +12,7 @@ from django.db.models import Q
 from django.template.loader import render_to_string
 from django.utils import timezone
 from .models import Cliente
+from apps.reservas.views import precio_total
 from weasyprint import HTML
 from django.http import HttpResponse
 from apps.reservas.models import Reserva
@@ -140,6 +141,38 @@ def custom_login_view(request):
     
     return render(request, 'clientes/login.html')
 
+def compras_realizadas(request):
+    usuario = request.user
+    search_query = request.GET.get("searchReserva", "")
+    compras = Reserva.objects.filter(
+        cliente__id=usuario.id,
+        estado="Pagado"
+    ).annotate(
+        asientos_reservados=Count('reservas_asientos')  # Contamos el número de asientos reservados
+    ).select_related('ruta', 'ruta__tren').filter(
+        Q(ruta__origen__icontains=search_query) |
+        Q(ruta__destino__icontains=search_query) |
+        Q(fecha_reserva__icontains=search_query) |
+        Q(estado__icontains=search_query)           
+    ).values(
+        'ruta__id',
+        'ruta__origen',
+        'ruta__destino',
+        'ruta__fecha_salida',
+        'ruta__hora_salida',
+        'fecha_reserva',
+        'estado',
+        'id',
+        'ruta__tren__nombre',
+        'ruta__precio',
+        'asientos_reservados'
+    ).order_by('id')
+    
+    for compra in compras:
+        compra['total_a_pagar'] = precio_total(compra['asientos_reservados'], compra['ruta__precio'])
+    
+    return compras
+
 @login_required
 def perfil_usuario(request):
     usuario = request.user
@@ -182,12 +215,17 @@ def perfil_usuario(request):
         'estado',
         'id',
         'ruta__tren__nombre',
+        'ruta__precio',
         'asientos_reservados'
     ).order_by('id')
+    
+    for reserva in reservas:
+        reserva['total_a_pagar'] = precio_total(reserva['asientos_reservados'], reserva['ruta__precio'])
     
     data = {
         "usuario": usuario,
         "reservas": reservas,
+        "compras": compras_realizadas(request),
         'today': today
     }
     return render(request, "clientes/perfil.html", data)

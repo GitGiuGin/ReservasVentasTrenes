@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Clientes por Ruta</title>
+    <style>
+        @page {
+            size: letter;
+            margin: 1cm;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+        h3 {
+            text-align: center;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            table-layout: fixed;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            text-align: left;
+            padding: 5px;
+            font-size: 12px;
+            word-wrap: break-word;
+        }
+        th {
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .text-center {
+            text-align: center;
+        }
+        th:nth-child(1), td:nth-child(1) { width: 10%; }
+        th:nth-child(2), td:nth-child(2) { width: 30%; }
+        th:nth-child(3), td:nth-child(3) { width: 12%; }
+        th:nth-child(4), td:nth-child(4) { width: 14%; }
+    </style>
+</head>
+<body>
+    <div class="header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1em; font-size: 14px;">
+        <div style="flex: 1; text-align: left;">
+            <strong>TrenExpress</strong><br><br>
+            <strong>Usuario:</strong> {{ administrador.nombres }} {{ administrador.apellido_paterno }} {{ administrador.apellido_materno }}
+        </div>
+        <div style="flex: 1; text-align: center;">
+            <strong>Lista de Clientes Registrados</strong><br><br>
+            <strong>Correo:</strong> {{ administrador.correo }}
+        </div>
+        <div style="flex: 1; text-align: left; display: flex; flex-direction: column; justify-content: space-between; height: 50px;">
+            <div>
+                <strong>Fecha:</strong> {{ now|date:"d/m/Y H:i:s" }}
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <p class="text-muted mb-4" style="font-size: 0.9rem;">
+            <span style="margin-right: 20px;">
+                <strong>Ruta:</strong> {{ ruta.origen }} - {{ ruta.destino }}
+            </span>
+            <span style="margin-right: 20px;">
+                <strong>Fecha:</strong> {{ ruta.fecha_salida|date:"d/m/Y" }}
+            </span>
+            <span>
+                <strong>Horario:</strong> {{ ruta.hora_salida|time:"H:i" }}
+            </span>
+        </p>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nº</th>
+                <th>Cliente</th>
+                <th>Asiento</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in clientes %}
+            <tr>
+                <td class="text-center align-middle p-1">{{ forloop.counter }}</td>
+                <td>{{ c.nombres }} {{ c.apellido_paterno }} {{ c.apellido_materno }}</td>
+                <td class="text-center align-middle p-1">{{ c.numero_asiento }}</td>
+                <td class="text-center align-middle p-1">{{ c.reserva_estado }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

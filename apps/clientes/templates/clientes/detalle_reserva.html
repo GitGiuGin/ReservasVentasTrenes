@@ -26,6 +26,7 @@
                             <div class="col-md-6">
                                 <p><strong>Origen:</strong> {{ reserva.ruta.origen }}</p>
                                 <p><strong>Fecha de Salida:</strong> {{ reserva.ruta.fecha_salida|date:"d/m/Y" }}</p>
+                                <p><strong>Estado:</strong> {{ reserva.estado }}</p>
                             </div>
                             <div class="col-md-6">  <!-- Segunda columna -->
                                 <p><strong>Destino:</strong> {{ reserva.ruta.destino }}</p>
@@ -47,9 +48,11 @@
             </div>
         </div>
         <div class="card-footer text-end">
+            {% if reserva.estado == "Pagado" %}
             <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#pdfModal">
                 <i class="fa fa-file"></i> Generar PDF
             </button>
+            {% endif %}
             <a href="{% url 'mi_cuenta' %}" class="btn btn-dark">Regresar a mi perfil</a>
         </div>
     </div>

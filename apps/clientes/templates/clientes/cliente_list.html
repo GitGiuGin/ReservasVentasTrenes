@@ -16,7 +16,7 @@
                     style="background-color: #000000; border-color: #000000; width: 100px;"
                     onmouseover="this.style.transform='scale(1.01)'; this.style.backgroundColor='#2c2c2c';"
                     onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#000000';">
-                    <i class="fas fa-save"></i> Nuevo
+                    <i class="fa fa-address-card" aria-hidden="true"></i> Nuevo
                 </a>
             </div>
             <div class="col-md-auto mb-2">
@@ -24,7 +24,15 @@
                     style="background-color: #000000; border-color: #000000; width: 100px;"
                     onmouseover="this.style.transform='scale(1.01)'; this.style.backgroundColor='#2c2c2c';"
                     onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#000000';">
-                    <i class="fas fa-save"></i> Atrás
+                    <i class="fa fa-reply" aria-hidden="true"></i> Atrás
+                </a>
+            </div>
+            <div class="col-md-auto mb-2">
+                <a href="{% url 'reporte_clientes_pdf' %}" class="btn btn-dark"
+                    style="background-color: #000000; border-color: #000000; width: 170px;"
+                    onmouseover="this.style.transform='scale(1.01)'; this.style.backgroundColor='#2c2c2c';"
+                    onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#000000';">
+                    <i class="fa fa-file" aria-hidden="true"></i> Generar reporte
                 </a>
             </div>
         </div>

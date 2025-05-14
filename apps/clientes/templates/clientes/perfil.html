@@ -43,7 +43,7 @@
         width: 100%;
     }
 
-    #modalMisReservas .modal-dialog {
+    #modalMisReservas .modal-dialog, #modalMisCompras .modal-dialog {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -54,14 +54,14 @@
         /* Centra el modal horizontalmente */
     }
 
-    #modalMisReservas .modal-content {
+    #modalMisReservas .modal-content, #modalMisCompras .modal-content {
         width: auto;
         max-width: none;
         /* Elimina cualquier restricción de ancho predeterminado */
     }
 
     /* Tabla responsive para pantallas pequeñas */
-    #modalMisReservas .modal-body {
+    #modalMisReservas .modal-body, #modalMisCompras .modal-body {
         overflow-x: auto;
         /* Permite desplazamiento horizontal para la tabla */
         padding: 1rem;
@@ -78,14 +78,14 @@
     }
 
     /* Ajuste de botones para que sean responsivos dentro de la tabla */
-    #modalMisReservas .table .d-flex {
+    #modalMisReservas .table .d-flex, #modalMisCompras .table .d-flex {
         flex-wrap: wrap;
         /* Permite que los botones se muevan a la siguiente línea en pantallas pequeñas */
         gap: 0.5rem;
         /* Espacio entre botones */
     }
 
-    #modalMisReservas .table .btn {
+    #modalMisReservas .table .btn, #modalMisCompras .table .btn {
         min-width: 100px;
         /* Ancho mínimo para los botones */
         flex: 1 1 auto;
@@ -130,6 +130,8 @@
                 <h5 class="text-center mb-3">Menú</h5>
                 <button type="button" class="btn btn-outline-dark w-100 mt-4" data-bs-toggle="modal"
                     data-bs-target="#modalMisReservas">Mis Reservas</button>
+                <button type="button" class="btn btn-outline-dark w-100 mt-2" data-bs-toggle="modal"
+                    data-bs-target="#modalMisCompras">Mis Compras</button>
                 <a href="{% url 'clientes_edicion' usuario.id 'mi_cuenta' %}"
                     class="btn btn-outline-dark w-100 mt-2">Editar Perfil</a>
                 <button type="button" class="btn btn-outline-dark w-100 mt-2" data-bs-toggle="modal"
@@ -228,13 +230,13 @@
                             <th class="text-center" scope="col">Estado</th>
                             <th class="text-center" scope="col">Tren</th>
                             <th class="text-center" scope="col">Asientos</th>
-                            <th class="text-center" scope="col">Acciones de reserva</th>
+                            <th class="text-center" scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for reserva in reservas %}
                         <tr>
-                            <td>{{ reserva.ruta__origen }}</td>
+                            <td>{{ reserva.id }}{{ reserva.ruta__origen }}</td>
                             <td>{{ reserva.ruta__destino }}</td>
                             <td>{{ reserva.ruta__fecha_salida|date:"d/m/Y" }}</td>
                             <td>{{ reserva.ruta__hora_salida|time:"H:i" }}</td>
@@ -244,24 +246,78 @@
                             <td class="text-center">{{ reserva.asientos_reservados }}</td>
                             <td>
                                 <div class="d-flex">
-                                    <a href="{% url 'detalle_reserva' reserva.id %}" class="btn btn-dark mr-1" title="Ver reserva">
+                                    <a href="{% url 'detalle_reserva' reserva.id %}" class="btn btn-dark mr-1
+                                        {% if reserva.estado == "Pagado" or reserva.estado == "Cancelado" or r.funcion__fecha < today %}
+                                        disabled 
+                                        {% endif %}" title="Ver reserva">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                     </a>
-                                    <a href="{% url 'editar_asiento' reserva.id reserva.ruta__id %}" class="btn btn-dark mr-1" title="Editar reserva">
+                                    <button type="submit" data-bs-toggle="modal" data-bs-target="#paymentModal-{{ reserva.id }}" class="btn btn-dark mr-1" title="Realizar pago: {{ reserva.total_a_pagar }} Bs.-"
+                                        {% if reserva.estado == "Pagado" or reserva.estado == "Cancelado"%}
+                                        disabled
+                                        {% endif %}>
+                                        <i class="fa fa-usd" aria-hidden="true"></i></i>
+                                    </button>
+                                    <a href="{% url 'editar_asiento' reserva.id reserva.ruta__id %}" class="btn btn-dark mr-1
+                                        {% if reserva.estado == "Pagado" or reserva.estado == "Cancelado" or r.funcion__fecha < today %}
+                                        disabled 
+                                        {% endif %}" title="Editar reserva">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="#" class="btn btn-dark mr-1 cancelar-reserva-btn" data-id="{{ reserva.id }}" data-bs-toggle="modal" data-bs-target="#confirmarCancelarModal" title="Cancelar reserva">
+                                    <a href="#" class="btn btn-dark mr-1 cancelar-reserva-btn
+                                        {% if reserva.estado == "Pagado" or reserva.estado == "Cancelado" or r.funcion__fecha < today %}
+                                        disabled 
+                                        {% endif %}" data-id="{{ reserva.id }}" data-bs-toggle="modal" data-bs-target="#confirmarCancelarModal" title="Cancelar reserva">
                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                     </a>
-                                    <form method="POST" action="{% url 'enviar_ticket' reserva.id %}">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-dark mr-1" title="Enviar a correo">
-                                            <i class="fa fa-envelope" aria-hidden="true"></i>
-                                        </button>
-                                    </form>
                                 </div>
                             </td>
                         </tr>
+                        <!-- Modal de Pago para cada reserva -->
+                        <div class="modal fade" id="paymentModal-{{ reserva.id }}" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="paymentModalLabel">Total a Pagar</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{% url 'registrar_pago' reserva.id %}" method="POST" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <div class="container">
+                                                <!-- Grid para dos columnas -->
+                                                <div class="row">
+                                                    <!-- Columna 1: Total a Pagar -->
+                                                    <div class="col-6">
+                                                        <label for="totalAPagar" class="form-label">Total a pagar:</label>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <label for="totalAPagar" class="form-label">{{ reserva.total_a_pagar }}
+                                                            Bs.-</label>
+                                                        <input type="hidden" name="total_a_pagar" value={{ reserva.total_a_pagar }}>
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="row mt-3">
+                                                    <!-- Columna 2: Subir documento PDF -->
+                                                    <div class="col-6">
+                                                        <label class="form-label">Subir documento PDF:</label>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <input type="file" id="pdfDocumento" class="form-control"
+                                                            name="pdf_documento" accept="application/pdf" required>
+                                                    </div>
+                                                    <div class="modal-footer mt-3">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Cancelar</button>
+                                                        <button type="submit" class="btn btn-dark">Aceptar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -294,6 +350,90 @@
                         <i class="fa fa-check" aria-hidden="true"></i> Sí 
                     </button>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Mis Compras -->
+<div class="modal fade" id="modalMisCompras" tabindex="-1" aria-labelledby="modalMisComprasLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalMisComprasLabel">Mis Compras</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mt-3">
+                    <form id="searchForm" method="GET" action="{% url 'mi_cuenta' %}" class="mb-4 w-100">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <div class="input-group">
+                                    <input type="text" name="searchReserva" class="form-control"
+                                        placeholder="Buscar reserva" value="{{ request.GET.searchReserva }}">
+                                    <button class="btn btn-dark" type="submit" onclick="submitSearch()">
+                                        <i class="fa fa-search" aria-hidden="true"></i> Buscar
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-auto mb-2">
+                                <a href="{% url 'ruta_disponible' %}" type="submit" id="reserveSeatsBtn"
+                                    class="btn btn-dark w-100"
+                                    style="background-color: #000000; border-color: #000000; width: 100px;"
+                                    onmouseover="this.style.transform='scale(1.01)'; this.style.backgroundColor='#2c2c2c';"
+                                    onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#000000';">
+                                    Nueva reserva
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="text-center" scope="col">Origen</th>
+                            <th class="text-center" scope="col">Destino</th>
+                            <th class="text-center" scope="col">Sale</th>
+                            <th class="text-center" scope="col">Horas</th>
+                            <th class="text-center" scope="col">Fecha reserva</th>
+                            <th class="text-center" scope="col">Estado</th>
+                            <th class="text-center" scope="col">Tren</th>
+                            <th class="text-center" scope="col">Asientos</th>
+                            <th class="text-center" scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reserva in compras %}
+                        <tr>
+                            <td>{{ reserva.ruta__origen }}</td>
+                            <td>{{ reserva.ruta__destino }}</td>
+                            <td>{{ reserva.ruta__fecha_salida|date:"d/m/Y" }}</td>
+                            <td>{{ reserva.ruta__hora_salida|time:"H:i" }}</td>
+                            <td>{{ reserva.fecha_reserva|date:"d/m/Y" }}</td>
+                            <td>{{ reserva.estado }}</td>
+                            <td>{{ reserva.ruta__tren__nombre }}</td>
+                            <td class="text-center">{{ reserva.asientos_reservados }}</td>
+                            <td>
+                                <div class="d-flex">
+                                    <a href="{% url 'detalle_reserva' reserva.id %}" class="btn btn-dark mr-1" title="Ver reserva">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </a>
+                                    <form method="POST" action="{% url 'enviar_ticket' reserva.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-dark mr-1" title="Enviar a correo">
+                                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
