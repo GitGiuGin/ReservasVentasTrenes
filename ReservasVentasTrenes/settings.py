@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'apps.reservas',
     'apps.rutas',
     'apps.trenes',
+    'apps.reportes',
 ]
 
 MIDDLEWARE = [
@@ -145,6 +146,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'clientes.Cliente'
 
 LOGIN_URL = 'login' 
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Configuración del backend de correo electrónico
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

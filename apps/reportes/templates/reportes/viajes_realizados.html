@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="text-center">
+    <p>{{ fecha_salida }}</p>
+    <h3 class="mb-2 mt-4">Viajes realizados</h3>
+    <p class="text-muted mb-4" style="font-size: 0.9rem;">
+        {% if fecha_salida or cliente %}
+            {% if cliente %}
+                Busqueda: {{ cliente }} <br>
+            {% endif %}
+            {% if fecha_salida %}
+                Fecha de salida desde: {{ fecha_salida }}
+            {% endif %}
+        {% else %}
+            General
+        {% endif %}
+    </p>
+</div>
+<form method="get" action="{% url 'viajes_realizados' %}">
+    <input type="hidden" name="accion" id="accion" value="">
+    <div class="row align-items-end mb-3 g-2">
+        <div class="col-md-3">
+            <label for="fecha_inicio" class="form-label">Fecha viaje:</label>
+            <input type="date" id="fecha_salida" name="fecha_salida" class="form-control" value="{{ fecha_salida }}">
+        </div>
+        <div class="col-md-3">
+            <label for="nombreCliente" class="form-label">Cliente:</label>
+            <input type="text" id="nombreCliente" name="nombreCliente" class="form-control" value="{{ cliente }}" placeholder="Nombre del cliente">
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-dark w-100" onclick="document.getElementById('accion').value='filtrar'">
+                <i class="fa fa-search" aria-hidden="true"></i> Buscar
+            </button>
+        </div>
+    </div>
+</form>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th class="text-center align-middle p-1">Nº</th>
+                <th class="text-center align-middle p-1">Cliente</th>
+                <th class="text-center align-middle p-1">Viaje</th>
+                <th class="text-center align-middle p-1">Fecha y hora</th>
+                <th class="text-center align-middle p-1">Tren</th>
+                <th class="text-center align-middle p-1">Número de asientos</th>
+            </tr>
+        </thead>
+        <tbody id="routeTableBody">
+            {% for r in reporte %}
+            <tr>
+                <td class="text-center align-middle p-1"> {{ forloop.counter }} </td>
+                <td>{{ r.reserva.cliente.nombres }} {{ r.reserva.cliente.apellido_paterno }} {{ r.reserva.cliente.apellido_materno }}</td>
+                <td> {{r.reserva.ruta.origen}} - {{r.reserva.ruta.destino}}</td>
+                <td class="text-center align-middle p-1"> {{r.reserva.ruta.fecha_salida|date:"d/m/Y"}} -  {{r.reserva.ruta.hora_salida|time:"H:i"}}</td>
+                <td>{{r.reserva.ruta.tren.nombre}} </td>
+                <td class="text-center align-middle p-1">{{r.num_asientos_reservados}} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

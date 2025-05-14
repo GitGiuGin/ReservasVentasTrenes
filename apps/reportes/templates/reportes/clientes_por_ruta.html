@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="text-center">
+    <h3 class="mb-2 mt-4">Lista de clientes registrados</h3>
+    <p class="text-muted mb-4" style="font-size: 0.9rem;">
+        <span style="margin-right: 20px;">
+            <strong>Ruta: </strong>{{ ruta.origen }} - {{ ruta.destino }}
+        </span>
+        <span style="margin-right: 20px;">
+            <strong>Fecha: </strong>{{ ruta.fecha_salida|date:"d/m/Y" }}
+        </span>
+        <span>
+            <strong>Horario: </strong>{{ ruta.hora_salida|time:"H:i" }}
+        </span>
+    </p>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th class="text-center align-middle p-1">Nº</th>
+                <th class="text-center align-middle p-1">Cliente</th>
+                <th class="text-center align-middle p-1">Asiento</th>
+                <th class="text-center align-middle p-1">Estado</th>
+            </tr>
+        </thead>
+        <tbody id="routeTableBody">
+            {% for c in clientes %}
+            <tr>
+                <td class="text-center align-middle p-1"> {{ forloop.counter }} </td>
+                <td > {{c.nombres}} {{c.apellido_paterno}} {{c.apellido_materno}} </td>
+                <td class="text-center align-middle p-1">{{c.numero_asiento}}</td>
+                <td class="text-center align-middle p-1"> {{c.reserva_estado}} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="text-end mb-3">
+    <a href={% url 'ruta_lista' %} class="btn btn-dark">
+        <i class="fa fa-reply" aria-hidden="true"></i> Atras
+    </a>
+    <a href="{% url 'clientes_por_ruta_pdf' ruta.id %}" class="btn btn-dark">
+        <i class="fa fa-file" aria-hidden="true"></i> Generar Reporte
+    </a>
+</div>
+{% endblock %}

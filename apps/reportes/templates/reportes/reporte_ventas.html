@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-center">
+    <h3 class="mb-2 mt-4">Reporte de ventas</h3>
+    <p class="text-muted mb-4" style="font-size: 0.9rem;">
+        {% if fecha_inicio and fecha_fin %}
+                Desde {{ fecha_inicio|date:"d/m/Y" }} hasta {{ fecha_fin|date:"d/m/Y" }}
+        {% else %}
+                General
+        {% endif %}
+    </p>
+</div>
+<form method="get" action="{% url 'reporte_ventas' %}">
+    <input type="hidden" name="accion" id="accion" value="">
+    <div class="row align-items-end mb-3 g-2">
+    <div class="col-md-3">
+        <label for="fecha_inicio" class="form-label">Fecha de inicio:</label>
+        <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{ fecha_inicio|date:'Y-m-d' }}">
+    </div>
+    <div class="col-md-3">
+        <label for="fecha_fin" class="form-label">Fecha de fin:</label>
+        <input type="date" id="fecha_fin" name="fecha_fin" class="form-control" value="{{ fecha_fin|date:'Y-m-d' }}">
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-dark w-100" onclick="document.getElementById('accion').value='filtrar'">
+            <i class="fa fa-search" aria-hidden="true"></i> Buscar
+        </button>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-dark w-100" onclick="document.getElementById('accion').value='descargar_pdf'">
+            <i class="fa fa-file" aria-hidden="true"></i> Generar Reporte
+        </button>
+    </div>
+    </div>
+</form>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th class="text-center align-middle p-1">Nº</th>
+                <th class="text-center align-middle p-1">Fecha Pago</th>
+                <th class="text-center align-middle p-1">Cliente</th>
+                <th class="text-center align-middle p-1">Viaje</th>
+                <th class="text-center align-middle p-1">Fecha y hora</th>
+                <th class="text-center align-middle p-1">Tren</th>
+                <th class="text-center align-middle p-1">Número de asientos</th>
+                <th class="text-center align-middle p-1">Monto total</th>
+            </tr>
+        </thead>
+        <tbody id="routeTableBody">
+            {% for r in resultados %}
+            <tr>
+                <td class="text-center align-middle p-1"> {{ forloop.counter }} </td>
+                <td class="text-center align-middle p-1"> {{ r.fecha_pago|date:"d/m/Y" }} </td>
+                <td>{{ r.reserva.cliente.nombres }} {{ r.reserva.cliente.apellido_paterno }} {{ r.reserva.cliente.apellido_materno }}</td>
+                <td> {{r.reserva.ruta.origen}} - {{r.reserva.ruta.destino}}</td>
+                <td class="text-center align-middle p-1"> {{r.reserva.ruta.fecha_salida|date:"d/m/Y"}} -  {{r.reserva.ruta.hora_salida|time:"H:i"}}</td>
+                <td>{{r.reserva.ruta.tren.nombre}} </td>
+                <td class="text-center align-middle p-1">{{r.num_asientos_reservados}} </td>
+                <td class="text-center align-middle p-1 text-end">{{ r.monto_total }} Bs.- </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% if total_ventas %}
+    <div class="mt-4 text-end">
+        <h4>Total: {{ total_ventas }} Bs.-</h4>
+    </div>
+{% endif %}
+{% endblock %}

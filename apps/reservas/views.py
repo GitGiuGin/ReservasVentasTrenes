@@ -24,7 +24,7 @@ def nuevaReserva(request):
     
     reserva = Reserva.objects.create(
             fecha_reserva=fecha_formateada,
-            estado=True, 
+            estado="Reservado", 
             ruta=ruta_especifica,
             cliente=usuario_especifico
         )
@@ -161,6 +161,9 @@ def editarReserva(request, reserva_id):
             asiento=asiento,
             estado=False  # Estado en ReservaAsiento, asumiendo que 'False' significa que el asiento está reservado
         )
+
+    reserva.estado = "Modificado"
+    reserva.save()
     
     return redirect('mi_cuenta')
 
@@ -240,7 +243,8 @@ def confEditarReserva(request, reserva_id):
 
 def cancelar_reserva (request, reserva_id):
     reserva = get_object_or_404(Reserva, id=reserva_id)
-    reserva.delete()
+    reserva.estado = "Cancelado"
+    reserva.save()
     eliminar_registros = ReservaAsiento.objects.filter(reserva_id=reserva_id)
     eliminar_registros.delete()
     

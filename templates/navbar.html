@@ -39,6 +39,7 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="{% url 'clientes_nuevo' %}">Nuevo cliente</a></li>
                         <li><a class="dropdown-item" href="{% url 'clientes_lista' %}">Consultar cliente</a></li>
+                        <li><a class="dropdown-item" href="{% url 'viajes_realizados' %}">Viajes realizado</a></li>
                     </ul>
                 </li>
 
@@ -50,6 +51,15 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="{% url 'ruta_nuevo' %}">Nueva ruta</a></li>
                         <li><a class="dropdown-item" href="{% url 'ruta_lista' %}">Consultar rutas</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-credit-card-alt" aria-hidden="true"></i> Ventas
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'reporte_ventas' %}">Consultar ventas</a></li>
                     </ul>
                 </li>
                 {% endif %}
